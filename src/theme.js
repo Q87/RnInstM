@@ -11,4 +11,6 @@ export const THEME = {
   INACTIVE_COLOR: '#b3b3b3',
   DOT_BACKGROUND: '#efefef',
   DIMMING_BACKGROUND: 'rgba(0, 0, 0, .5)',
+  DIMMING_ICON_BACKGROUND: 'rgba(0, 0, 0, .1)',
+  SNAP_BACKGROUND: '#ffb490',
 };

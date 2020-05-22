@@ -27,8 +27,8 @@ const screenOptions = navigation => ({
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
         title="Brightness - Contrast"
-        iconName="brightness-6"
-        iconType={'MaterialCommunityIcons'}
+        iconName="adjust"
+        iconType={'Entypo'}
       />
     </HeaderButtons>
   ),
