@@ -1,6 +1,13 @@
-import React from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
 import {RNCamera} from 'react-native-camera';
+import {useSelector, useDispatch} from 'react-redux';
+import {addImage} from '../store/actions/post';
 import {THEME} from '../theme';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,8 +21,85 @@ const ICON_SIZE = 30;
  * Show camera screen
  */
 export const CameraScreen = ({navigation}) => {
+  const [image, setImage] = useState(useSelector(state => state.post.newImage));
+  const dispatch = useDispatch();
+
+  /**
+   * Take a picture with a camera
+   */
+  const takePicture = async camera => {
+    const options = {
+      quality: 0.7,
+    };
+    const data = await camera.takePictureAsync(options);
+
+    /* If the photo was taken */
+    setImage(data);
+    dispatch(addImage(data));
+  };
+
+  /**
+   * Go to the photo editing screen
+   */
+  const editPhoto = () => {
+    image && navigation.navigate('EditPhotoScreen');
+  };
+
   return (
-    <RNCamera style={styles.camera}>
+    <View style={styles.container}>
+      {image ? (
+        <ImageBackground source={image} style={styles.image} />
+      ) : (
+        <RNCamera style={styles.camera}>
+          {({camera}) => {
+            return (
+              <View
+                style={[styles.captureActions, styles.captureActions_bottom]}>
+                <TouchableOpacity
+                  style={styles.action}
+                  onPress={() => navigation.navigate('SimpleLibraryScreen')}>
+                  <View style={styles.library} />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.action}>
+                  <MaterialCommunityIcons
+                    name="flash"
+                    size={ICON_SIZE}
+                    color={THEME.MAIN_CONTENT_COLOR}
+                    style={[styles.icon, styles.icon_lightning]}
+                  />
+                </TouchableOpacity>
+
+                <View style={styles.snapContainer}>
+                  <TouchableOpacity
+                    style={styles.snap}
+                    onPress={() => takePicture(camera)}
+                  />
+                </View>
+
+                <TouchableOpacity style={styles.action}>
+                  <Entypo
+                    name="cycle"
+                    size={ICON_SIZE}
+                    color={THEME.MAIN_CONTENT_COLOR}
+                    style={[styles.icon, styles.icon_cycle]}
+                  />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.action}>
+                  <MaterialCommunityIcons
+                    name="emoticon-happy-outline"
+                    size={ICON_SIZE}
+                    color={THEME.MAIN_CONTENT_COLOR}
+                    style={[styles.icon, styles.icon_happy]}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        </RNCamera>
+      )}
+
       <View style={[styles.captureActions, styles.captureActions_top]}>
         <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
           <MaterialCommunityIcons
@@ -26,8 +110,7 @@ export const CameraScreen = ({navigation}) => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate('EditPhotoScreen')}>
+        <TouchableOpacity onPress={() => editPhoto()}>
           <Feather
             name="chevron-right"
             size={ICON_SIZE}
@@ -36,53 +119,17 @@ export const CameraScreen = ({navigation}) => {
           />
         </TouchableOpacity>
       </View>
-
-      <View style={[styles.captureActions, styles.captureActions_bottom]}>
-        <TouchableOpacity
-          style={styles.action}
-          onPress={() => navigation.navigate('SimpleLibraryScreen')}>
-          <View style={styles.library} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.action}>
-          <MaterialCommunityIcons
-            name="flash"
-            size={ICON_SIZE}
-            color={THEME.MAIN_CONTENT_COLOR}
-            style={[styles.icon, styles.icon_lightning]}
-          />
-        </TouchableOpacity>
-
-        <View style={styles.snapContainer}>
-          <TouchableOpacity
-            style={styles.snap}
-            onPress={() => console.log('Take photo')}
-          />
-        </View>
-
-        <TouchableOpacity style={styles.action}>
-          <Entypo
-            name="cycle"
-            size={ICON_SIZE}
-            color={THEME.MAIN_CONTENT_COLOR}
-            style={[styles.icon, styles.icon_cycle]}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.action}>
-          <MaterialCommunityIcons
-            name="emoticon-happy-outline"
-            size={ICON_SIZE}
-            color={THEME.MAIN_CONTENT_COLOR}
-            style={[styles.icon, styles.icon_happy]}
-          />
-        </TouchableOpacity>
-      </View>
-    </RNCamera>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  image: {
+    flex: 1,
+  },
   camera: {
     flex: 1,
   },
@@ -102,7 +149,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   icon: {
-    backgroundColor: THEME.DIMMING_ICON_BACKGROUND,
+    shadowOpacity: 4,
+    textShadowRadius: 6,
+    textShadowOffset: {width: 0, height: 0},
     borderRadius: ICON_SIZE / 2,
   },
   icon_sun: {
