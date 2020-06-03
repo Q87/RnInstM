@@ -1,7 +1,11 @@
-import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, useWindowDimensions} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {useSelector, useDispatch} from 'react-redux';
+import {getLibraryPhotos} from '../store/actions/library';
+
+import {Picker} from '@react-native-community/picker';
 
 import {THEME} from '../theme';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -10,6 +14,9 @@ import {AppHeaderIcon} from '../components/AppHeaderIcon';
 import {LibraryScreen} from '../screens/LibraryScreen';
 import {PhotoScreen} from '../screens/PhotoScreen';
 import {VideoScreen} from '../screens/VideoScreen';
+
+// All photos
+const ALL_PHOTOS = 'All Photos';
 
 // Screen options
 const screenOptions = navigation => ({
@@ -26,23 +33,6 @@ const screenOptions = navigation => ({
     paddingLeft: 15,
   },
 
-  headerTitle: () => (
-    <View style={[styles.header, styles.header_title]}>
-      <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-        <Item
-          title="All Photos"
-          buttonStyle={[styles.header__text, styles.header__text_title]}
-        />
-
-        <Item
-          title="All Photos - icon"
-          iconName="chevron-down"
-          iconType="MaterialCommunityIcons"
-          buttonStyle={styles.header__item_title}
-        />
-      </HeaderButtons>
-    </View>
-  ),
   headerTitleAlign: 'center',
 
   headerRight: () => (
@@ -64,23 +54,61 @@ const LibraryNavigatorStack = createStackNavigator();
 /**
  * Show library navigator
  */
-const LibraryNavigator = () => (
-  <LibraryNavigatorStack.Navigator
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: THEME.NAVIGATION_BACKGROUND,
-      },
-      headerTintColor: THEME.ICON_COLOR,
-    }}>
-    <LibraryNavigatorStack.Screen
-      name="LibraryScreen"
-      component={LibraryScreen}
-      options={({navigation}) => ({
-        ...screenOptions(navigation),
-      })}
-    />
-  </LibraryNavigatorStack.Navigator>
-);
+const LibraryNavigator = () => {
+  // Album list
+  const albums = useSelector(state => [
+    {
+      title: ALL_PHOTOS,
+    },
+    ...state.library.albums,
+  ]);
+
+  // Selected album
+  const [selectedAlbum, setSelectedAlbum] = useState(albums[0].title);
+
+  const dispatch = useDispatch();
+  const windowWidth = useWindowDimensions().width;
+
+  /**
+   * Choose another album
+   */
+  const onValueChangeHandler = album => {
+    setSelectedAlbum(album);
+    dispatch(getLibraryPhotos(album !== ALL_PHOTOS ? album : null));
+  };
+
+  return (
+    <LibraryNavigatorStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: THEME.NAVIGATION_BACKGROUND,
+        },
+        headerTintColor: THEME.ICON_COLOR,
+      }}>
+      <LibraryNavigatorStack.Screen
+        name="LibraryScreen"
+        component={LibraryScreen}
+        options={({navigation}) => ({
+          ...screenOptions(navigation),
+          headerTitle: () => (
+            <Picker
+              selectedValue={selectedAlbum}
+              style={[
+                {
+                  width: windowWidth / 3,
+                },
+              ]}
+              onValueChange={onValueChangeHandler}>
+              {albums.map(({title}, key) => (
+                <Picker.Item label={title} value={title} key={key} />
+              ))}
+            </Picker>
+          ),
+        })}
+      />
+    </LibraryNavigatorStack.Navigator>
+  );
+};
 
 const PhotoNavigatorStack = createStackNavigator();
 
@@ -174,26 +202,12 @@ export const AddStoryLibraryStepNavigator = () => (
 );
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  header_title: {
-    marginRight: -20,
-  },
   header__text: {
     fontSize: 18,
     textTransform: 'capitalize',
     fontWeight: '100',
   },
-  header__text_title: {
-    fontWeight: '600',
-  },
   header__text_next: {
     color: THEME.ACTIVE_BACKGROUND,
-  },
-  header__item_title: {
-    marginLeft: -10,
-    marginRight: 0,
   },
 });

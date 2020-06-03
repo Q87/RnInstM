@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  SafeAreaView,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import {useSelector, useDispatch} from 'react-redux';
@@ -45,81 +46,92 @@ export const CameraScreen = ({navigation}) => {
     image && navigation.navigate('EditPhotoScreen');
   };
 
+  /**
+   * Show top actions
+   */
+  const renderTopActions = () => (
+    <View style={[styles.captureActions, styles.captureActions_top]}>
+      <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+        <MaterialCommunityIcons
+          name="octagram-outline"
+          size={ICON_SIZE}
+          color={THEME.MAIN_CONTENT_COLOR}
+          style={[styles.icon, styles.icon_sun]}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => editPhoto()}>
+        <Feather
+          name="chevron-right"
+          size={ICON_SIZE}
+          color={THEME.MAIN_CONTENT_COLOR}
+          style={[styles.icon, styles.icon_next]}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {image ? (
-        <ImageBackground source={image} style={styles.image} />
+        <ImageBackground source={image} style={styles.image}>
+          {renderTopActions()}
+        </ImageBackground>
       ) : (
         <RNCamera style={styles.camera}>
           {({camera}) => {
             return (
-              <View
-                style={[styles.captureActions, styles.captureActions_bottom]}>
-                <TouchableOpacity
-                  style={styles.action}
-                  onPress={() => navigation.navigate('SimpleLibraryScreen')}>
-                  <View style={styles.library} />
-                </TouchableOpacity>
+              <>
+                {renderTopActions()}
 
-                <TouchableOpacity style={styles.action}>
-                  <MaterialCommunityIcons
-                    name="flash"
-                    size={ICON_SIZE}
-                    color={THEME.MAIN_CONTENT_COLOR}
-                    style={[styles.icon, styles.icon_lightning]}
-                  />
-                </TouchableOpacity>
-
-                <View style={styles.snapContainer}>
+                <View
+                  style={[styles.captureActions, styles.captureActions_bottom]}>
                   <TouchableOpacity
-                    style={styles.snap}
-                    onPress={() => takePicture(camera)}
-                  />
+                    style={styles.action}
+                    onPress={() => navigation.navigate('SimpleLibraryScreen')}>
+                    <View style={styles.library} />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.action}>
+                    <MaterialCommunityIcons
+                      name="flash"
+                      size={ICON_SIZE}
+                      color={THEME.MAIN_CONTENT_COLOR}
+                      style={[styles.icon, styles.icon_lightning]}
+                    />
+                  </TouchableOpacity>
+
+                  <View style={styles.snapContainer}>
+                    <TouchableOpacity
+                      style={styles.snap}
+                      onPress={() => takePicture(camera)}
+                    />
+                  </View>
+
+                  <TouchableOpacity style={styles.action}>
+                    <Entypo
+                      name="cycle"
+                      size={ICON_SIZE}
+                      color={THEME.MAIN_CONTENT_COLOR}
+                      style={[styles.icon, styles.icon_cycle]}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.action}>
+                    <MaterialCommunityIcons
+                      name="emoticon-happy-outline"
+                      size={ICON_SIZE}
+                      color={THEME.MAIN_CONTENT_COLOR}
+                      style={[styles.icon, styles.icon_happy]}
+                    />
+                  </TouchableOpacity>
                 </View>
-
-                <TouchableOpacity style={styles.action}>
-                  <Entypo
-                    name="cycle"
-                    size={ICON_SIZE}
-                    color={THEME.MAIN_CONTENT_COLOR}
-                    style={[styles.icon, styles.icon_cycle]}
-                  />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.action}>
-                  <MaterialCommunityIcons
-                    name="emoticon-happy-outline"
-                    size={ICON_SIZE}
-                    color={THEME.MAIN_CONTENT_COLOR}
-                    style={[styles.icon, styles.icon_happy]}
-                  />
-                </TouchableOpacity>
-              </View>
+              </>
             );
           }}
         </RNCamera>
       )}
-
-      <View style={[styles.captureActions, styles.captureActions_top]}>
-        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
-          <MaterialCommunityIcons
-            name="octagram-outline"
-            size={ICON_SIZE}
-            color={THEME.MAIN_CONTENT_COLOR}
-            style={[styles.icon, styles.icon_sun]}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => editPhoto()}>
-          <Feather
-            name="chevron-right"
-            size={ICON_SIZE}
-            color={THEME.MAIN_CONTENT_COLOR}
-            style={[styles.icon, styles.icon_next]}
-          />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

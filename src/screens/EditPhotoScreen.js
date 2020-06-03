@@ -5,6 +5,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Text,
+  SafeAreaView,
 } from 'react-native';
 import {THEME} from '../theme';
 import {useSelector, useDispatch} from 'react-redux';
@@ -33,7 +34,7 @@ export const EditPhotoScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <SafeAreaView style={styles.wrapper}>
       <ImageBackground
         style={styles.image}
         source={{
@@ -116,7 +117,7 @@ export const EditPhotoScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
-    </View>
+    </SafeAreaView>
   );
 };
 

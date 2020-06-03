@@ -1,48 +1,126 @@
-import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import CameraRoll from '@react-native-community/cameraroll';
+import React, {useState, useEffect} from 'react';
+import {
+  SafeAreaView,
+  View,
+  StyleSheet,
+  FlatList,
+  ImageBackground,
+  TouchableHighlight,
+  useWindowDimensions,
+} from 'react-native';
 import {THEME} from '../theme';
+
+import {useSelector, useDispatch} from 'react-redux';
+import {getLibraryData} from '../store/actions/library';
+
+// Separator width between photos
+const ITEM_SEPARATOR = 1;
 
 /**
  * Show media library screen
  */
 export const LibraryScreen = () => {
+  // Photo list
+  const photos = useSelector(state => state.library.photos);
+  // Selected photos
+  const [selectedPhotos, setSelectedPhotos] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const windowWidth = useWindowDimensions().width;
+  const windowHeight = useWindowDimensions().height;
+
   /**
-   * Get albums from a local photo library
+   * Get library data
    */
-  const getAlbums = () => {
-    CameraRoll.getAlbums({
-      assetType: 'Photos',
-    })
-      .then(albums => {
-        console.log(albums);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+  useEffect(() => {
+    dispatch(getLibraryData());
+  }, [dispatch]);
+
+  /**
+   * Select a photo on initial load
+   */
+  useEffect(() => {
+    if (photos.length && !selectedPhotos.length) {
+      setSelectedPhotos([...selectedPhotos, photos[0]?.node?.image?.uri]);
+    }
+  }, [photos, selectedPhotos]);
+
+  /**
+   * Show the main photos
+   */
+  const renderMainPhotos = () =>
+    selectedPhotos?.map(uri => (
+      <ImageBackground
+        style={styles.photo}
+        source={{
+          uri,
+        }}
+        key={uri}
+      />
+    ));
+
+  /**
+   * Select a photo
+   */
+  const selectPhoto = uri => {
+    setSelectedPhotos([uri]);
   };
 
   /**
-   * Get photos from a local photo library
+   * Show a list of photos
    */
-  const getPhotos = () => {
-    CameraRoll.getPhotos({
-      first: 10,
-      assetType: 'Photos',
-    })
-      .then(photos => {
-        console.log(photos.edges);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
+  const renderPhotos = uri => (
+    <TouchableHighlight
+      style={styles.imageContainer}
+      onPress={() => selectPhoto(uri)}>
+      <ImageBackground
+        style={[
+          {
+            width: windowWidth / 4 - ITEM_SEPARATOR * 2,
+            height: windowWidth / 4 - ITEM_SEPARATOR * 2,
+          },
+          selectedPhotos.includes(uri) && styles.image_selected,
+        ]}
+        source={{
+          uri,
+        }}
+      />
+    </TouchableHighlight>
+  );
 
   return (
-    <View style={styles.wrapper}>
-      <Text onPress={() => getAlbums()}>Get albums</Text>
-      <Text onPress={() => getPhotos()}>Get photos</Text>
-    </View>
+    <SafeAreaView style={styles.wrapper}>
+      <View
+        style={[
+          styles.photoContainer,
+          {
+            height: (windowHeight * 55) / 100,
+          },
+        ]}>
+        {renderMainPhotos()}
+      </View>
+
+      {photos.length > 0 && (
+        <FlatList
+          data={photos}
+          renderItem={({
+            item: {
+              node: {
+                image: {uri},
+              },
+            },
+          }) => renderPhotos(uri)}
+          keyExtractor={({
+            node: {
+              image: {uri},
+            },
+          }) => uri}
+          numColumns={4}
+          columnWrapperStyle={styles.images}
+        />
+      )}
+    </SafeAreaView>
   );
 };
 
@@ -51,6 +129,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: THEME.MAIN_CONTENT_COLOR,
     justifyContent: 'space-around',
-    alignItems: 'center',
+  },
+  photoContainer: {
+    width: '100%',
+  },
+  photo: {
+    width: '100%',
+    height: '100%',
+  },
+  images: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  imageContainer: {
+    padding: ITEM_SEPARATOR,
+  },
+  image_selected: {
+    opacity: 0.5,
   },
 });

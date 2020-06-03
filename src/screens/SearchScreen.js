@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {THEME} from '../theme';
 
 /**
@@ -7,9 +7,9 @@ import {THEME} from '../theme';
  */
 export const SearchScreen = () => {
   return (
-    <View style={styles.wrapper}>
+    <SafeAreaView style={styles.wrapper}>
       <Text>Search</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, SafeAreaView} from 'react-native';
 import {THEME} from '../theme';
 
 /**
@@ -7,11 +7,11 @@ import {THEME} from '../theme';
  */
 export const ShareScreen = () => {
   return (
-    <View style={styles.wrapper}>
+    <SafeAreaView style={styles.wrapper}>
       <View style={styles.post}>
         <Text>Share</Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

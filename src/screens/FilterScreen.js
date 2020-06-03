@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, SafeAreaView} from 'react-native';
 import {THEME} from '../theme';
 
 /**
@@ -7,13 +7,13 @@ import {THEME} from '../theme';
  */
 export const FilterScreen = () => {
   return (
-    <View style={styles.wrapper}>
+    <SafeAreaView style={styles.wrapper}>
       <View style={styles.filters}>
         <View style={styles.filter}>
           <Text>Filter</Text>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
