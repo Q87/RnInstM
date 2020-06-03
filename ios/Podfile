@@ -77,11 +77,10 @@ target 'RnInstM' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
-
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
+
 
   pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
 

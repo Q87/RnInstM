@@ -57,6 +57,7 @@ const getPhotos = async album => {
   const params = {
     first: 10,
     assetType: 'Photos',
+    groupTypes: 'Album',
   };
 
   // If a folder is specified for selecting photos

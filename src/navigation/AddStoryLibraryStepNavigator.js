@@ -205,7 +205,6 @@ const styles = StyleSheet.create({
   header__text: {
     fontSize: 18,
     textTransform: 'capitalize',
-    fontWeight: '100',
   },
   header__text_next: {
     color: THEME.ACTIVE_BACKGROUND,
