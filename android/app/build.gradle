@@ -122,6 +122,7 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -135,6 +136,9 @@ android {
         versionCode 1
         versionName "1.0"
         missingDimensionStrategy 'react-native-camera', 'general' // <--- insert this line
+        renderscriptTargetApi rootProject.ext.renderscriptVersion
+        renderscriptSupportModeEnabled true
+        multiDexEnabled true
     }
     splits {
         abi {

@@ -13,4 +13,6 @@ export const THEME = {
   DIMMING_BACKGROUND: 'rgba(0, 0, 0, .5)',
   DIMMING_ICON_BACKGROUND: 'rgba(0, 0, 0, .1)',
   SNAP_BACKGROUND: '#ffb490',
+  CHECK_COLOR: '#006400',
+  CANCEL_COLOR: '#8b0000',
 };

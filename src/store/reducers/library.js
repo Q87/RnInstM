@@ -2,12 +2,18 @@ import {
   GET_LIBRARY_DATA,
   GET_LIBRARY_ALBUMS,
   GET_LIBRARY_PHOTOS,
+  SET_PHOTOS_FOR_EDITING,
+  SET_PHOTO_TO_SAVE,
+  SET_PHOTO_TO_SHARE,
 } from '../types';
 
 const initialState = {
   isFirstLoad: true,
   albums: [],
   photos: [],
+  selectedPhotos: [],
+  photoToSave: [],
+  photoToShare: [],
 };
 
 export const libraryReducer = (state = initialState, action) => {
@@ -29,6 +35,24 @@ export const libraryReducer = (state = initialState, action) => {
       return {
         ...state,
         photos: action.photos,
+      };
+
+    case SET_PHOTOS_FOR_EDITING:
+      return {
+        ...state,
+        selectedPhotos: action.payload,
+      };
+
+    case SET_PHOTO_TO_SAVE:
+      return {
+        ...state,
+        photoToSave: action.payload,
+      };
+
+    case SET_PHOTO_TO_SHARE:
+      return {
+        ...state,
+        photoToShare: action.payload,
       };
 
     default:

@@ -11,7 +11,7 @@ import {
 import {THEME} from '../theme';
 
 import {useSelector, useDispatch} from 'react-redux';
-import {getLibraryData} from '../store/actions/library';
+import {getLibraryData, setPhotosForEditing} from '../store/actions/library';
 
 // Separator width between photos
 const ITEM_SEPARATOR = 1;
@@ -42,9 +42,12 @@ export const LibraryScreen = () => {
    */
   useEffect(() => {
     if (photos.length && !selectedPhotos.length) {
-      setSelectedPhotos([...selectedPhotos, photos[0]?.node?.image?.uri]);
+      const uri = photos[0]?.node?.image?.uri;
+
+      setSelectedPhotos([...selectedPhotos, uri]);
+      dispatch(setPhotosForEditing([uri]));
     }
-  }, [photos, selectedPhotos]);
+  }, [dispatch, photos, selectedPhotos]);
 
   /**
    * Show the main photos
@@ -65,6 +68,7 @@ export const LibraryScreen = () => {
    */
   const selectPhoto = uri => {
     setSelectedPhotos([uri]);
+    dispatch(setPhotosForEditing([uri]));
   };
 
   /**
@@ -95,7 +99,7 @@ export const LibraryScreen = () => {
         style={[
           styles.photoContainer,
           {
-            height: (windowHeight * 55) / 100,
+            height: (windowHeight * 55) / 100 - ITEM_SEPARATOR,
           },
         ]}>
         {renderMainPhotos()}
@@ -132,6 +136,8 @@ const styles = StyleSheet.create({
   },
   photoContainer: {
     width: '100%',
+    borderBottomWidth: ITEM_SEPARATOR,
+    borderBottomColor: THEME.MAIN_CONTENT_COLOR,
   },
   photo: {
     width: '100%',

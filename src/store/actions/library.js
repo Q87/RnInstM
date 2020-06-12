@@ -5,6 +5,9 @@ import {
   GET_LIBRARY_DATA,
   GET_LIBRARY_ALBUMS,
   GET_LIBRARY_PHOTOS,
+  SET_PHOTOS_FOR_EDITING,
+  SET_PHOTO_TO_SAVE,
+  SET_PHOTO_TO_SHARE,
 } from '../types';
 
 /**
@@ -14,6 +17,10 @@ const askForPermissions = async () => {
   if (Platform.OS === 'android') {
     const status = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      {
+        title: 'Permission explanation',
+        message: 'This app wants to access your photo library!',
+      },
     );
 
     // If access was denied
@@ -126,5 +133,60 @@ export const getLibraryPhotos = album => async dispatch => {
   dispatch({
     type: GET_LIBRARY_PHOTOS,
     photos,
+  });
+};
+
+/**
+ * Set photos for editing
+ */
+export const setPhotosForEditing = payload => dispatch => {
+  dispatch({
+    type: SET_PHOTOS_FOR_EDITING,
+    payload,
+  });
+};
+
+/**
+ * Set photo to save
+ */
+export const setPhotoToSave = payload => dispatch => {
+  dispatch({
+    type: SET_PHOTO_TO_SAVE,
+    payload,
+  });
+};
+
+/**
+ * Save photo
+ */
+export const savePhoto = () => async (dispatch, getState) => {
+  return new Promise(async (resolve, reject) => {
+    const hasPermissions = await askForPermissions();
+
+    // If permission isn't obtained
+    if (!hasPermissions) {
+      console.log('Access to the media library was denied');
+    }
+
+    const {
+      library: {photoToSave},
+    } = getState();
+    const params = {
+      type: 'photo',
+    };
+
+    // Save photo to photo library
+    CameraRoll.save(photoToSave[0], params)
+      .then(uri => {
+        dispatch({
+          type: SET_PHOTO_TO_SHARE,
+          payload: [uri],
+        });
+
+        resolve(uri);
+      })
+      .catch(err => {
+        reject(err);
+      });
   });
 };

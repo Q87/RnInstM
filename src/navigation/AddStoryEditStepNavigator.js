@@ -3,6 +3,9 @@ import {StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
+import {useDispatch} from 'react-redux';
+import {savePhoto} from '../store/actions/library';
+
 import {THEME} from '../theme';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {AppHeaderIcon} from '../components/AppHeaderIcon';
@@ -10,8 +13,22 @@ import {AppHeaderIcon} from '../components/AppHeaderIcon';
 import {FilterScreen} from '../screens/FilterScreen';
 import {EditScreen} from '../screens/EditScreen';
 
+/**
+ * Go to the sharing screen
+ */
+const goToShareStep = async (navigation, dispatch) => {
+  try {
+    // Save photo
+    await dispatch(savePhoto());
+
+    navigation.navigate('AddStoryShareStepNavigator');
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // Screen options
-const screenOptions = navigation => ({
+const screenOptions = (navigation, dispatch) => ({
   headerLeft: () => (
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
@@ -38,7 +55,7 @@ const screenOptions = navigation => ({
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
         title="Next"
-        onPress={() => navigation.navigate('AddStoryShareStepNavigator')}
+        onPress={() => goToShareStep(navigation, dispatch)}
         buttonStyle={[styles.header__text, styles.header__text_next]}
       />
     </HeaderButtons>
@@ -53,46 +70,54 @@ const FilterNavigatorStack = createStackNavigator();
 /**
  * Show photo filtering navigator
  */
-const FilterNavigator = () => (
-  <FilterNavigatorStack.Navigator
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: THEME.NAVIGATION_BACKGROUND,
-      },
-      headerTintColor: THEME.ICON_COLOR,
-    }}>
-    <FilterNavigatorStack.Screen
-      name="FilterScreen"
-      component={FilterScreen}
-      options={({navigation}) => ({
-        ...screenOptions(navigation),
-      })}
-    />
-  </FilterNavigatorStack.Navigator>
-);
+const FilterNavigator = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <FilterNavigatorStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: THEME.NAVIGATION_BACKGROUND,
+        },
+        headerTintColor: THEME.ICON_COLOR,
+      }}>
+      <FilterNavigatorStack.Screen
+        name="FilterScreen"
+        component={FilterScreen}
+        options={({navigation}) => ({
+          ...screenOptions(navigation, dispatch),
+        })}
+      />
+    </FilterNavigatorStack.Navigator>
+  );
+};
 
 const EditNavigatorStack = createStackNavigator();
 
 /**
  * Show photo editing navigator
  */
-const EditNavigator = () => (
-  <EditNavigatorStack.Navigator
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: THEME.NAVIGATION_BACKGROUND,
-      },
-      headerTintColor: THEME.ICON_COLOR,
-    }}>
-    <EditNavigatorStack.Screen
-      name="EditScreen"
-      component={EditScreen}
-      options={({navigation}) => ({
-        ...screenOptions(navigation),
-      })}
-    />
-  </EditNavigatorStack.Navigator>
-);
+const EditNavigator = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <EditNavigatorStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: THEME.NAVIGATION_BACKGROUND,
+        },
+        headerTintColor: THEME.ICON_COLOR,
+      }}>
+      <EditNavigatorStack.Screen
+        name="EditScreen"
+        component={EditScreen}
+        options={({navigation}) => ({
+          ...screenOptions(navigation, dispatch),
+        })}
+      />
+    </EditNavigatorStack.Navigator>
+  );
+};
 
 const AddStoryEditStepNavigatorStack = createBottomTabNavigator();
 
