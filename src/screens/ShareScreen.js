@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform
 } from 'react-native';
 import {THEME} from '../theme';
 import {useSelector} from 'react-redux';
@@ -70,5 +71,10 @@ const styles = StyleSheet.create({
   post__text: {
     flexGrow: 1,
     fontSize: 17,
+    ...Platform.select({
+      ios: {
+        paddingTop: 10,
+      },
+    }),
   },
 });

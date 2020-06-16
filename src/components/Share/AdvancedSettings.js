@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Platform} from 'react-native';
 import {THEME} from '../../theme';
 
 import Accordion from 'react-native-collapsible/Accordion';
@@ -75,6 +75,10 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   header__icon: {
-    marginTop: 2,
+    ...Platform.select({
+      android: {
+        marginTop: 2,
+      },
+    }),
   },
 });

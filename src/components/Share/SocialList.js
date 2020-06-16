@@ -1,5 +1,5 @@
 import React, {useState, useMemo, useCallback} from 'react';
-import {View, StyleSheet, Text, Switch, Keyboard} from 'react-native';
+import {View, StyleSheet, Text, Switch, Keyboard, Platform} from 'react-native';
 import {THEME} from '../../theme';
 
 /**
@@ -43,8 +43,8 @@ export const SocialList = () => {
    */
   const socialList = useMemo(
     () =>
-      Object.entries(social).map(([type, {name, value}]) => (
-        <View style={styles.social__item} key={type}>
+      Object.entries(social).map(([type, {name, value}], key) => (
+        <View style={[styles.social__item, key > 0 && styles.social__item_padding]} key={type}>
           <Text style={styles.social__text}>{name}</Text>
 
           <Switch
@@ -70,20 +70,43 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingLeft: 15,
     paddingRight: 20,
-    paddingBottom: 20,
     borderTopWidth: 2,
     borderTopColor: THEME.SEPARATOR_COLOR,
+    ...Platform.select({
+      android: {
+        paddingVertical: 20,
+      },
+      ios: {
+        paddingVertical: 15,
+      },
+    }),
   },
   social__item: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 20,
+  },
+  social__item_padding: {
+    ...Platform.select({
+      android: {
+        paddingTop: 20,
+      },
+      ios: {
+        paddingTop: 30,
+      },
+    }),
   },
   social__text: {
     fontSize: 17,
   },
   social__switch: {
-    transform: [{scaleX: 1.8}, {scaleY: 1.8}],
+    ...Platform.select({
+      android: {
+        transform: [{scaleX: 1.8}, {scaleY: 1.8}],
+      },
+      ios: {
+        transform: [{scaleX: 1.3}, {scaleY: 1.3}],
+      },
+    }),
   },
 });
