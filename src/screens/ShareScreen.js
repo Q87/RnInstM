@@ -1,22 +1,49 @@
-import React from 'react';
-import {View, StyleSheet, Text, SafeAreaView, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import {THEME} from '../theme';
-
 import {useSelector} from 'react-redux';
+
+import {SocialList} from '../components/Share/SocialList';
+import {TagList} from '../components/Share/TagList';
+import {AdvancedSettings} from '../components/Share/AdvancedSettings';
 
 /**
  * Show screen with the ability to share a new post
  */
 export const ShareScreen = () => {
+  const [text, setText] = useState('');
   const photoToShare = useSelector(state => state.library.photoToShare);
 
   return (
     <SafeAreaView style={styles.wrapper}>
-      <View style={styles.post}>
-        <Image source={{uri: photoToShare[0]}} style={styles.post_image} />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.wrapper__content}>
+          <View style={styles.post}>
+            <Image source={{uri: photoToShare[0]}} style={styles.post__image} />
 
-        <Text style={styles.post_text}>Boston is beautiful today!</Text>
-      </View>
+            <TextInput
+              style={styles.post__text}
+              placeholder="Введите текст заметки"
+              value={text}
+              onChangeText={setText}
+            />
+          </View>
+
+          <TagList />
+
+          <SocialList />
+
+          <AdvancedSettings />
+        </View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };
@@ -25,23 +52,23 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: THEME.MAIN_CONTENT_COLOR,
-    alignItems: 'center',
+  },
+  wrapper__content: {
+    flex: 1,
   },
   post: {
     width: '100%',
     flexDirection: 'row',
-    borderBottomWidth: 2,
-    borderBottomColor: THEME.SEPARATOR_COLOR,
     padding: 18,
+    alignItems: 'flex-start',
   },
-  post_image: {
-    width: 70,
-    height: 70,
-    borderWidth: 1,
+  post__image: {
+    width: 80,
+    height: 80,
     marginRight: 15,
   },
-  post_text: {
-    marginTop: 8,
+  post__text: {
+    flexGrow: 1,
     fontSize: 17,
   },
 });
