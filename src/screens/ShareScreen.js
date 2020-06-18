@@ -7,10 +7,12 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
-  Platform
+  Platform,
 } from 'react-native';
 import {THEME} from '../theme';
-import {useSelector} from 'react-redux';
+
+import {useSelector, useDispatch} from 'react-redux';
+import {setTextToShare} from '../store/actions/library';
 
 import {SocialList} from '../components/Share/SocialList';
 import {TagList} from '../components/Share/TagList';
@@ -22,19 +24,34 @@ import {AdvancedSettings} from '../components/Share/AdvancedSettings';
 export const ShareScreen = () => {
   const [text, setText] = useState('');
   const photoToShare = useSelector(state => state.library.photoToShare);
+  const dispatch = useDispatch();
+
+  /**
+   * Set text to share
+   */
+  const saveText = msg => {
+    setText(msg);
+    dispatch(setTextToShare(msg));
+  };
 
   return (
     <SafeAreaView style={styles.wrapper}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.wrapper__content}>
           <View style={styles.post}>
-            <Image source={{uri: photoToShare[0]}} style={styles.post__image} />
+            <Image
+              source={{
+                uri: photoToShare[0],
+              }}
+              style={styles.post__image}
+            />
 
             <TextInput
               style={styles.post__text}
               placeholder="Введите текст заметки"
               value={text}
-              onChangeText={setText}
+              onChangeText={saveText}
+              multiline={true}
             />
           </View>
 
@@ -71,6 +88,7 @@ const styles = StyleSheet.create({
   post__text: {
     flexGrow: 1,
     fontSize: 17,
+    textAlignVertical: 'top',
     ...Platform.select({
       ios: {
         paddingTop: 10,

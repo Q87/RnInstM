@@ -3,14 +3,27 @@ import {StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {StackActions} from '@react-navigation/native';
 
+import {useDispatch} from 'react-redux';
+import {addPost} from '../store/actions/post';
+
 import {THEME} from '../theme';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {AppHeaderIcon} from '../components/AppHeaderIcon';
 
 import {ShareScreen} from '../screens/ShareScreen';
 
+/**
+ * Share post
+ */
+const sharePost = (navigation, dispatch) => {
+  dispatch(addPost());
+
+  navigation.dispatch(StackActions.popToTop());
+  navigation.navigate('HomeNavigator');
+};
+
 // Screen options
-const screenOptions = navigation => ({
+const screenOptions = (navigation, dispatch) => ({
   headerLeft: () => (
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
@@ -36,10 +49,7 @@ const screenOptions = navigation => ({
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
         title="Share"
-        onPress={() => {
-          navigation.dispatch(StackActions.popToTop());
-          navigation.navigate('HomeNavigator');
-        }}
+        onPress={() => sharePost(navigation, dispatch)}
         buttonStyle={[styles.header__text, styles.header__text_next]}
       />
     </HeaderButtons>
@@ -54,23 +64,27 @@ const AddStoryShareStepNavigatorStack = createStackNavigator();
 /**
  * Show step of adding a new post
  */
-export const AddStoryShareStepNavigator = () => (
-  <AddStoryShareStepNavigatorStack.Navigator
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: THEME.NAVIGATION_BACKGROUND,
-      },
-      headerTintColor: THEME.ICON_COLOR,
-    }}>
-    <AddStoryShareStepNavigatorStack.Screen
-      name="ShareScreen"
-      component={ShareScreen}
-      options={({navigation}) => ({
-        ...screenOptions(navigation),
-      })}
-    />
-  </AddStoryShareStepNavigatorStack.Navigator>
-);
+export const AddStoryShareStepNavigator = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <AddStoryShareStepNavigatorStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: THEME.NAVIGATION_BACKGROUND,
+        },
+        headerTintColor: THEME.ICON_COLOR,
+      }}>
+      <AddStoryShareStepNavigatorStack.Screen
+        name="ShareScreen"
+        component={ShareScreen}
+        options={({navigation}) => ({
+          ...screenOptions(navigation, dispatch),
+        })}
+      />
+    </AddStoryShareStepNavigatorStack.Navigator>
+  );
+};
 
 const styles = StyleSheet.create({
   header__text: {

@@ -14,15 +14,17 @@ export const StoryContent = ({name, likedBy, hashtags, content}) => {
       <View style={styles.story}>
         <LikedBy likedBy={likedBy} />
 
-        <View style={styles.header}>
-          <Text style={styles.user}>{name}</Text>
+        {hashtags.length > 0 && (
+          <View style={styles.header}>
+            <Text style={styles.user}>{name}</Text>
 
-          {hashtags.map(({id, name: hashtag}) => (
-            <Text style={styles.hashtag} key={id}>
-              {hashtag}
-            </Text>
-          ))}
-        </View>
+            {hashtags.map(({id, name: hashtag}) => (
+              <Text style={styles.hashtag} key={id}>
+                {hashtag}
+              </Text>
+            ))}
+          </View>
+        )}
 
         <StoryTalk name={name} content={content} />
       </View>

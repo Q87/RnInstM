@@ -58,15 +58,23 @@ export const FilterScreen = () => {
   const windowHeight = useWindowDimensions().height;
 
   /**
+   * Set photo for next step
+   */
+  const setPhotoForNextStep = (type, nativeEvent) => {
+    const uri =
+      type === FILTER_TYPES[0].Type ? selectedPhotos[0] : nativeEvent.uri;
+
+    dispatch(setPhotoToSave([uri]));
+  };
+
+  /**
    * Build the main image
    */
   const buildMainImage = ({Type, source, style}) => (
     <Type
       image={<Image source={source} style={style} />}
       extractImageEnabled={true}
-      onExtractImage={({nativeEvent}) =>
-        dispatch(setPhotoToSave([nativeEvent.uri]))
-      }
+      onExtractImage={({nativeEvent}) => setPhotoForNextStep(Type, nativeEvent)}
     />
   );
 

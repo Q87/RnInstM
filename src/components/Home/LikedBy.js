@@ -7,7 +7,7 @@ import {ProfileImage} from '../ProfileImage';
  * Show information about the likes of a story
  */
 export const LikedBy = ({likedBy}) => {
-  return (
+  return likedBy.qty ? (
     <View style={styles.likes}>
       <View style={styles.likes__users}>
         {likedBy.last.map(({id, avatar}, key) => (
@@ -32,7 +32,7 @@ export const LikedBy = ({likedBy}) => {
         and {likedBy.qty} others
       </Text>
     </View>
-  );
+  ) : null;
 };
 
 const styles = StyleSheet.create({

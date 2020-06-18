@@ -8,6 +8,7 @@ import {
   SET_PHOTOS_FOR_EDITING,
   SET_PHOTO_TO_SAVE,
   SET_PHOTO_TO_SHARE,
+  SET_TEXT_TO_SHARE,
 } from '../types';
 
 /**
@@ -169,24 +170,44 @@ export const savePhoto = () => async (dispatch, getState) => {
     }
 
     const {
-      library: {photoToSave},
+      library: {photoToSave, selectedPhotos},
     } = getState();
     const params = {
       type: 'photo',
     };
 
-    // Save photo to photo library
-    CameraRoll.save(photoToSave[0], params)
-      .then(uri => {
-        dispatch({
-          type: SET_PHOTO_TO_SHARE,
-          payload: [uri],
-        });
-
-        resolve(uri);
-      })
-      .catch(err => {
-        reject(err);
+    // If the photo hasn't changed
+    if (selectedPhotos[0] === photoToSave[0]) {
+      dispatch({
+        type: SET_PHOTO_TO_SHARE,
+        payload: [photoToSave[0]],
       });
+
+      resolve(photoToSave[0]);
+    } else {
+      // Save photo to photo library
+      CameraRoll.save(photoToSave[0], params)
+        .then(uri => {
+          dispatch({
+            type: SET_PHOTO_TO_SHARE,
+            payload: [uri],
+          });
+
+          resolve(uri);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    }
+  });
+};
+
+/**
+ * Set text to share
+ */
+export const setTextToShare = payload => dispatch => {
+  dispatch({
+    type: SET_TEXT_TO_SHARE,
+    payload,
   });
 };

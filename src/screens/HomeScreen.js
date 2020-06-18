@@ -1,39 +1,71 @@
-import React from 'react';
-import {ScrollView, StyleSheet, View, SafeAreaView} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  SafeAreaView,
+  ActivityIndicator,
+} from 'react-native';
 import {THEME} from '../theme';
 import {StoriesLine} from '../components/Home/StoriesLine';
 import {ProfileTopBar} from '../components/Home/ProfileTopBar';
 import {StorySlider} from '../components/Home/StorySlider';
 import {StoryContent} from '../components/Home/StoryContent';
 
-import {user} from '../mocks/user';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadPosts} from '../store/actions/post';
 
 /**
  * Show home screen
  */
 export const HomeScreen = () => {
-  const {name, location, stories} = user;
+  const dispatch = useDispatch();
+
+  /**
+   * Load posts
+   */
+  useEffect(() => {
+    dispatch(loadPosts());
+  }, [dispatch]);
+
+  const allPosts = useSelector(state => state.post.allPosts);
+  const loading = useSelector(state => state.post.loading);
+
+  // If posts are loading
+  if (loading) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator color={THEME.ICON_COLOR} />
+      </View>
+    );
+  }
+
+  const {name, location, stories} = allPosts;
+
+  // Show stories
+  const renderStories = ({images, likedBy, hashtags, content}) => (
+    <View>
+      <ProfileTopBar name={name} location={location} />
+
+      <StorySlider images={images} />
+
+      <StoryContent
+        name={name}
+        likedBy={likedBy}
+        hashtags={hashtags}
+        content={content}
+      />
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.wrapper}>
-      <ScrollView>
-        <StoriesLine />
-
-        {stories.map(({id, images, likedBy, hashtags, content}) => (
-          <View key={id}>
-            <ProfileTopBar name={name} location={location} />
-
-            <StorySlider images={images} />
-
-            <StoryContent
-              name={name}
-              likedBy={likedBy}
-              hashtags={hashtags}
-              content={content}
-            />
-          </View>
-        ))}
-      </ScrollView>
+      <FlatList
+        data={stories}
+        renderItem={({item}) => renderStories(item)}
+        keyExtractor={({id}) => id.toString()}
+        ListHeaderComponent={<StoriesLine />}
+      />
     </SafeAreaView>
   );
 };
@@ -42,5 +74,10 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: THEME.MAIN_CONTENT_COLOR,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

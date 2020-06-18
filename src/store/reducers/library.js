@@ -5,6 +5,8 @@ import {
   SET_PHOTOS_FOR_EDITING,
   SET_PHOTO_TO_SAVE,
   SET_PHOTO_TO_SHARE,
+  SET_TEXT_TO_SHARE,
+  RESET_DATA_FOR_SHARING,
 } from '../types';
 
 const initialState = {
@@ -14,6 +16,7 @@ const initialState = {
   selectedPhotos: [],
   photoToSave: [],
   photoToShare: [],
+  textToShare: '',
 };
 
 export const libraryReducer = (state = initialState, action) => {
@@ -41,6 +44,7 @@ export const libraryReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedPhotos: action.payload,
+        photoToSave: action.payload,
       };
 
     case SET_PHOTO_TO_SAVE:
@@ -53,6 +57,21 @@ export const libraryReducer = (state = initialState, action) => {
       return {
         ...state,
         photoToShare: action.payload,
+      };
+
+    case SET_TEXT_TO_SHARE:
+      return {
+        ...state,
+        textToShare: action.payload,
+      };
+
+    case RESET_DATA_FOR_SHARING:
+      return {
+        ...state,
+        selectedPhotos: [],
+        photoToSave: [],
+        photoToShare: [],
+        textToShare: '',
       };
 
     default:

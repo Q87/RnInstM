@@ -44,7 +44,9 @@ export const SocialList = () => {
   const socialList = useMemo(
     () =>
       Object.entries(social).map(([type, {name, value}], key) => (
-        <View style={[styles.social__item, key > 0 && styles.social__item_padding]} key={type}>
+        <View
+          style={[styles.social__item, key > 0 && styles.social__item_padding]}
+          key={type}>
           <Text style={styles.social__text}>{name}</Text>
 
           <Switch

@@ -9,20 +9,20 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 export const StoryTalk = ({name, content}) => {
   return content.map(({id, data, reviews}) => (
     <View key={id}>
-      <View>
-        <View style={styles.content}>
-          <Text>
-            <Text style={styles.user}>{name}</Text> {data}
-          </Text>
-        </View>
+      {data.trim().length > 0 && (
+        <View>
+          <View style={styles.content}>
+            <Text>{data}</Text>
+          </View>
 
-        <MaterialCommunityIcons
-          name="heart-outline"
-          size={15}
-          color={THEME.INACTIVE_COLOR}
-          style={styles.like}
-        />
-      </View>
+          <MaterialCommunityIcons
+            name="heart-outline"
+            size={15}
+            color={THEME.INACTIVE_COLOR}
+            style={styles.like}
+          />
+        </View>
+      )}
 
       {reviews.length > 0 && (
         <View>

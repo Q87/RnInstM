@@ -76,33 +76,40 @@ export const StorySlider = ({images}) => {
 
   return (
     <View>
-      <View>
-        <Swiper
-          style={styles.wrapper}
-          showsButtons={false}
-          showsPagination={false}
-          onIndexChanged={index => {
-            setPos(index);
-          }}
-          loadMinimal={true}
-          loop={false}>
-          {state?.imgList?.map(({id, url}, idx) => (
-            <Slide
-              key={id}
-              idx={idx}
-              uri={url}
-              loadHandle={loadHandle}
-              loaded={state.loadQueue[idx]}
-            />
-          )) || <Fragment />}
-        </Swiper>
+      {qty > 1 ? (
+        <View>
+          <Swiper
+            style={styles.wrapper}
+            showsButtons={false}
+            showsPagination={false}
+            onIndexChanged={index => {
+              setPos(index);
+            }}
+            loadMinimal={true}
+            loop={false}>
+            {state?.imgList?.map(({id, url}, idx) => (
+              <Slide
+                key={id}
+                idx={idx}
+                uri={url}
+                loadHandle={loadHandle}
+                loaded={state.loadQueue[idx]}
+              />
+            )) || <Fragment />}
+          </Swiper>
 
-        <View style={styles.counter}>
-          <Text style={styles.counter__text}>
-            {pos + 1} / {qty}
-          </Text>
+          <View style={styles.counter}>
+            <Text style={styles.counter__text}>
+              {pos + 1} / {qty}
+            </Text>
+          </View>
         </View>
-      </View>
+      ) : (
+        <Image
+          style={[styles.image, styles.image_single]}
+          source={{uri: images[0].url}}
+        />
+      )}
 
       <StoryActionsBar qty={qty} pos={pos} />
     </View>
@@ -111,16 +118,19 @@ export const StorySlider = ({images}) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: 278,
+    height: 350,
   },
   slide: {
-    height: 278,
+    height: 350,
     justifyContent: 'center',
     alignItems: 'center',
   },
   image: {
     width: '100%',
     height: '100%',
+  },
+  image_single: {
+    height: 350,
   },
   account: {
     position: 'absolute',

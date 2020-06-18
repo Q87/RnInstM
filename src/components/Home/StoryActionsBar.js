@@ -10,16 +10,18 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 export const StoryActionsBar = ({qty, pos}) => {
   return (
     <View style={styles.wrapper}>
-      <View style={styles.dots}>
-        {[...Array(qty)].map((_, key) => (
-          <View
-            style={[styles.dot, pos === key && styles.dot_selected]}
-            key={`dot-${key}`}
-          />
-        ))}
-      </View>
+      {qty > 1 && (
+        <View style={styles.dots}>
+          {[...Array(qty)].map((_, key) => (
+            <View
+              style={[styles.dot, pos === key && styles.dot_selected]}
+              key={`dot-${key}`}
+            />
+          ))}
+        </View>
+      )}
 
-      <View style={styles.icons}>
+      <View style={[styles.icons, qty > 1 && styles.icons_swiper]}>
         <View style={styles.icon}>
           <MaterialCommunityIcons
             name="heart-outline"
@@ -70,10 +72,12 @@ const styles = StyleSheet.create({
   },
   icons: {
     flexDirection: 'row',
-    marginTop: -44,
     height: 44,
     width: '100%',
     alignItems: 'center',
+  },
+  icons_swiper: {
+    marginTop: -44,
   },
   icon: {
     marginRight: 18,

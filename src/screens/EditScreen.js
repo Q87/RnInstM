@@ -32,6 +32,19 @@ export const EditScreen = () => {
   const [state, innerDispatch] = useReducer(filterReducer, initialState);
 
   /**
+   * Set photo for next step
+   */
+  const setPhotoForNextStep = useCallback(
+    nativeEvent => {
+      const uri =
+        state.appliedFilters.length > 0 ? nativeEvent.uri : selectedPhotos[0];
+
+      dispatch(setPhotoToSave([uri]));
+    },
+    [dispatch, selectedPhotos, state.appliedFilters.length],
+  );
+
+  /**
    * Build the main image
    */
   const buildMainImage = useCallback(
@@ -39,8 +52,7 @@ export const EditScreen = () => {
       const params = isWrapper
         ? {
             extractImageEnabled: true,
-            onExtractImage: ({nativeEvent}) =>
-              dispatch(setPhotoToSave([nativeEvent.uri])),
+            onExtractImage: ({nativeEvent}) => setPhotoForNextStep(nativeEvent),
           }
         : {};
 
@@ -78,7 +90,7 @@ export const EditScreen = () => {
         />
       );
     },
-    [dispatch],
+    [setPhotoForNextStep],
   );
 
   /**
