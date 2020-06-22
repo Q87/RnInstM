@@ -4,13 +4,14 @@ import {
   ADD_IMAGE,
   ADD_POST,
   RESET_DATA_FOR_SHARING,
+  ADD_TO_FAVOURITES,
 } from '../types';
 import {user} from '../../mocks/user';
 
 /**
  * Load posts
  */
-export const loadPosts = () => dispatch => {
+export const loadPosts = () => (dispatch) => {
   const posts = user;
 
   dispatch({
@@ -22,7 +23,7 @@ export const loadPosts = () => dispatch => {
 /**
  * Add new image
  */
-export const addImage = image => dispatch => {
+export const addImage = (image) => (dispatch) => {
   dispatch({
     type: ADD_IMAGE,
     payload: image,
@@ -32,18 +33,15 @@ export const addImage = image => dispatch => {
 /**
  * Add post
  */
-export const addPost = post => (dispatch, getState) => {
+export const addPost = (post) => (dispatch, getState) => {
   const {
     post: {allPosts},
     library: {photoToShare, textToShare},
   } = getState();
-  const copied = {
-    ...allPosts,
-  };
 
   // New post
   const newPost = {
-    id: copied.stories.length + 1,
+    id: allPosts[0].stories.length + 1,
     images: photoToShare.map((photo, key) => ({
       id: key,
       url: photo,
@@ -59,15 +57,65 @@ export const addPost = post => (dispatch, getState) => {
     ],
   };
 
-  copied.stories.push(newPost);
+  allPosts[0].stories.push(newPost);
 
   batch(() => {
     dispatch({
       type: ADD_POST,
-      payload: copied,
+      payload: allPosts,
     });
     dispatch({
       type: RESET_DATA_FOR_SHARING,
     });
+  });
+};
+
+/**
+ * Add to favourites
+ */
+export const addToFavourites = (userId, storyId, actionType) => (
+  dispatch,
+  getState,
+) => {
+  let {
+    post: {allPosts, favourites, favouritePosts},
+  } = getState();
+  let favouritesCopied = [...favourites];
+  let favouritePostsCopied = [...favouritePosts];
+
+  // If added to favourites
+  if (actionType === 'add') {
+    favouritesCopied.push({userId, storyId});
+
+    // Find a favourite user
+    const favouriteUser = {
+      ...allPosts.find((currentUser) => userId === currentUser.id),
+    };
+    // Find a favourite user story
+    const favouriteUserStory = favouriteUser.stories.find(
+      (story) => storyId === story.id,
+    );
+
+    favouriteUser.stories = [favouriteUserStory];
+    favouritePostsCopied.push({
+      userId,
+      storyId,
+      data: favouriteUser,
+    });
+  } else if (actionType === 'remove') {
+    // If removed from favourites
+    favouritesCopied = favouritesCopied.filter((favourite) => {
+      return userId !== favourite.userId || storyId !== favourite.storyId;
+    });
+    favouritePostsCopied = favouritePostsCopied.filter(
+      (favourite) =>
+        userId !== favourite.userId || storyId !== favourite.storyId,
+    );
+  }
+
+  dispatch({
+    type: ADD_TO_FAVOURITES,
+    favourites: favouritesCopied,
+    favouritePosts: favouritePostsCopied,
   });
 };

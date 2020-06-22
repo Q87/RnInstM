@@ -16,7 +16,7 @@ const ICON_TYPES = {
 /**
  * Show header icon
  */
-export const AppHeaderIcon = props => {
+export const AppHeaderIcon = (props) => {
   const {iconSize, iconType} = props;
 
   return (

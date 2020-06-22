@@ -28,8 +28,9 @@ export const HomeScreen = () => {
     dispatch(loadPosts());
   }, [dispatch]);
 
-  const allPosts = useSelector(state => state.post.allPosts);
-  const loading = useSelector(state => state.post.loading);
+  const allPosts = useSelector((state) => state.post.allPosts);
+  const loading = useSelector((state) => state.post.loading);
+  const favourites = useSelector((state) => state.post.favourites);
 
   // If posts are loading
   if (loading) {
@@ -40,14 +41,22 @@ export const HomeScreen = () => {
     );
   }
 
-  const {name, location, stories} = allPosts;
+  const {id: userId, name, location, stories} = allPosts[0];
 
   // Show stories
-  const renderStories = ({images, likedBy, hashtags, content}) => (
+  const renderStories = ({id: storyId, images, likedBy, hashtags, content}) => (
     <View>
       <ProfileTopBar name={name} location={location} />
 
-      <StorySlider images={images} />
+      <StorySlider
+        userId={userId}
+        storyId={storyId}
+        images={images}
+        isFavourite={favourites.some(
+          (favourite) =>
+            favourite.userId === userId && favourite.storyId === storyId,
+        )}
+      />
 
       <StoryContent
         name={name}

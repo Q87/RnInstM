@@ -22,13 +22,15 @@ const ICON_SIZE = 30;
  * Show camera screen
  */
 export const CameraScreen = ({navigation}) => {
-  const [image, setImage] = useState(useSelector(state => state.post.newImage));
+  const [image, setImage] = useState(
+    useSelector((state) => state.post.newImage),
+  );
   const dispatch = useDispatch();
 
   /**
    * Take a picture with a camera
    */
-  const takePicture = async camera => {
+  const takePicture = async (camera) => {
     const options = {
       quality: 0.7,
     };

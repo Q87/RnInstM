@@ -23,13 +23,13 @@ import {AdvancedSettings} from '../components/Share/AdvancedSettings';
  */
 export const ShareScreen = () => {
   const [text, setText] = useState('');
-  const photoToShare = useSelector(state => state.library.photoToShare);
+  const photoToShare = useSelector((state) => state.library.photoToShare);
   const dispatch = useDispatch();
 
   /**
    * Set text to share
    */
-  const saveText = msg => {
+  const saveText = (msg) => {
     setText(msg);
     dispatch(setTextToShare(msg));
   };

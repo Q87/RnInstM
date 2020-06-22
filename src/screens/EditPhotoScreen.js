@@ -22,7 +22,7 @@ const ICON_SIZE = 30;
  * Show photo editing screen
  */
 export const EditPhotoScreen = ({navigation}) => {
-  const newImage = useSelector(state => state.post.newImage.uri);
+  const newImage = useSelector((state) => state.post.newImage.uri);
   const dispatch = useDispatch();
 
   /**

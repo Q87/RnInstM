@@ -51,7 +51,7 @@ const FILTER_TYPES = [
  */
 export const FilterScreen = () => {
   // Photo list
-  const selectedPhotos = useSelector(state => state.library.selectedPhotos);
+  const selectedPhotos = useSelector((state) => state.library.selectedPhotos);
 
   const dispatch = useDispatch();
   const [filterType, setFilterType] = useState(() => FILTER_TYPES[0].Type);

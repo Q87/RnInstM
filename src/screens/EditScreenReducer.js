@@ -108,7 +108,7 @@ export const filterReducer = (state, action) => {
       return {
         ...state,
         appliedFilters: state.appliedFilters.filter(
-          filter => state.currentFilter !== filter,
+          (filter) => state.currentFilter !== filter,
         ),
         currentFilter: null,
       };

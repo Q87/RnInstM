@@ -21,7 +21,7 @@ const ITEM_SEPARATOR = 1;
  */
 export const LibraryScreen = () => {
   // Photo list
-  const photos = useSelector(state => state.library.photos);
+  const photos = useSelector((state) => state.library.photos);
   // Selected photos
   const [selectedPhotos, setSelectedPhotos] = useState([]);
 
@@ -53,7 +53,7 @@ export const LibraryScreen = () => {
    * Show the main photos
    */
   const renderMainPhotos = () =>
-    selectedPhotos?.map(uri => (
+    selectedPhotos?.map((uri) => (
       <ImageBackground
         style={styles.photo}
         source={{
@@ -66,7 +66,7 @@ export const LibraryScreen = () => {
   /**
    * Select a photo
    */
-  const selectPhoto = uri => {
+  const selectPhoto = (uri) => {
     setSelectedPhotos([uri]);
     dispatch(setPhotosForEditing([uri]));
   };
@@ -74,7 +74,7 @@ export const LibraryScreen = () => {
   /**
    * Show a list of photos
    */
-  const renderPhotos = uri => (
+  const renderPhotos = (uri) => (
     <TouchableHighlight
       style={styles.imageContainer}
       onPress={() => selectPhoto(uri)}>

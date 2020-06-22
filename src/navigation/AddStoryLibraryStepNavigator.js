@@ -19,7 +19,7 @@ import {VideoScreen} from '../screens/VideoScreen';
 const ALL_PHOTOS = 'All Photos';
 
 // Screen options
-const screenOptions = navigation => ({
+const screenOptions = (navigation) => ({
   headerLeft: () => (
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
@@ -56,7 +56,7 @@ const LibraryNavigatorStack = createStackNavigator();
  */
 const LibraryNavigator = () => {
   // Album list
-  const albums = useSelector(state => [
+  const albums = useSelector((state) => [
     {
       title: ALL_PHOTOS,
     },
@@ -72,7 +72,7 @@ const LibraryNavigator = () => {
   /**
    * Choose another album
    */
-  const onValueChangeHandler = album => {
+  const onValueChangeHandler = (album) => {
     setSelectedAlbum(album);
     dispatch(getLibraryPhotos(album !== ALL_PHOTOS ? album : null));
   };

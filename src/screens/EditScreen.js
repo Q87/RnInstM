@@ -25,7 +25,7 @@ import Feather from 'react-native-vector-icons/Feather';
  */
 export const EditScreen = () => {
   // List of selected photos
-  const selectedPhotos = useSelector(state => state.library.selectedPhotos);
+  const selectedPhotos = useSelector((state) => state.library.selectedPhotos);
 
   const dispatch = useDispatch();
   const windowHeight = useWindowDimensions().height;
@@ -35,7 +35,7 @@ export const EditScreen = () => {
    * Set photo for next step
    */
   const setPhotoForNextStep = useCallback(
-    nativeEvent => {
+    (nativeEvent) => {
       const uri =
         state.appliedFilters.length > 0 ? nativeEvent.uri : selectedPhotos[0];
 
@@ -96,7 +96,7 @@ export const EditScreen = () => {
   /**
    * Select a filter
    */
-  const changeEditType = editType => {
+  const changeEditType = (editType) => {
     innerDispatch({
       type: 'CHANGE_EDIT_TYPE',
       editType,
@@ -106,7 +106,7 @@ export const EditScreen = () => {
   /**
    * Update filter data
    */
-  const onSlidingCompleteHandler = value => {
+  const onSlidingCompleteHandler = (value) => {
     innerDispatch({
       type: 'UPDATE_FILTER_DATA',
       value,

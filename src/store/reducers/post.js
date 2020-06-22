@@ -1,9 +1,11 @@
-import {LOAD_POSTS, ADD_IMAGE, ADD_POST} from '../types';
+import {LOAD_POSTS, ADD_IMAGE, ADD_POST, ADD_TO_FAVOURITES} from '../types';
 
 const initialState = {
   allPosts: [],
   loading: true,
   newImage: '',
+  favourites: [],
+  favouritePosts: [],
 };
 
 export const postReducer = (state = initialState, action) => {
@@ -25,6 +27,13 @@ export const postReducer = (state = initialState, action) => {
       return {
         ...state,
         allPosts: action.payload,
+      };
+
+    case ADD_TO_FAVOURITES:
+      return {
+        ...state,
+        favourites: action.favourites,
+        favouritePosts: action.favouritePosts,
       };
 
     default:

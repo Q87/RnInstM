@@ -49,10 +49,10 @@ const getAlbums = () => {
     CameraRoll.getAlbums({
       assetType: 'Photos',
     })
-      .then(albums => {
+      .then((albums) => {
         resolve(albums);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
@@ -61,7 +61,7 @@ const getAlbums = () => {
 /**
  * Get photos from a local photo library
  */
-const getPhotos = async album => {
+const getPhotos = async (album) => {
   const params = {
     first: 10,
     assetType: 'Photos',
@@ -82,10 +82,10 @@ const getPhotos = async album => {
     }
 
     CameraRoll.getPhotos(params)
-      .then(photos => {
+      .then((photos) => {
         resolve(photos.edges);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
@@ -116,7 +116,7 @@ export const getLibraryData = () => async (dispatch, getState) => {
 /**
  * Get library albums
  */
-export const getLibraryAlbums = () => async dispatch => {
+export const getLibraryAlbums = () => async (dispatch) => {
   const albums = await getAlbums();
 
   dispatch({
@@ -128,7 +128,7 @@ export const getLibraryAlbums = () => async dispatch => {
 /**
  * Get library photos
  */
-export const getLibraryPhotos = album => async dispatch => {
+export const getLibraryPhotos = (album) => async (dispatch) => {
   const photos = await getPhotos(album);
 
   dispatch({
@@ -140,7 +140,7 @@ export const getLibraryPhotos = album => async dispatch => {
 /**
  * Set photos for editing
  */
-export const setPhotosForEditing = payload => dispatch => {
+export const setPhotosForEditing = (payload) => (dispatch) => {
   dispatch({
     type: SET_PHOTOS_FOR_EDITING,
     payload,
@@ -150,7 +150,7 @@ export const setPhotosForEditing = payload => dispatch => {
 /**
  * Set photo to save
  */
-export const setPhotoToSave = payload => dispatch => {
+export const setPhotoToSave = (payload) => (dispatch) => {
   dispatch({
     type: SET_PHOTO_TO_SAVE,
     payload,
@@ -187,7 +187,7 @@ export const savePhoto = () => async (dispatch, getState) => {
     } else {
       // Save photo to photo library
       CameraRoll.save(photoToSave[0], params)
-        .then(uri => {
+        .then((uri) => {
           dispatch({
             type: SET_PHOTO_TO_SHARE,
             payload: [uri],
@@ -195,7 +195,7 @@ export const savePhoto = () => async (dispatch, getState) => {
 
           resolve(uri);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     }
@@ -205,7 +205,7 @@ export const savePhoto = () => async (dispatch, getState) => {
 /**
  * Set text to share
  */
-export const setTextToShare = payload => dispatch => {
+export const setTextToShare = (payload) => (dispatch) => {
   dispatch({
     type: SET_TEXT_TO_SHARE,
     payload,

@@ -1,13 +1,25 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {THEME} from '../../theme';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import {useDispatch} from 'react-redux';
+import {addToFavourites} from '../../store/actions/post';
+
 /**
  * Show the action bar for a story
  */
-export const StoryActionsBar = ({qty, pos}) => {
+export const StoryActionsBar = ({userId, storyId, qty, pos, isFavourite}) => {
+  const dispatch = useDispatch();
+
+  /**
+   * Add to favourites
+   */
+  const addToFavouritesHandler = () => {
+    dispatch(addToFavourites(userId, storyId, isFavourite ? 'remove' : 'add'));
+  };
+
   return (
     <View style={styles.wrapper}>
       {qty > 1 && (
@@ -22,13 +34,15 @@ export const StoryActionsBar = ({qty, pos}) => {
       )}
 
       <View style={[styles.icons, qty > 1 && styles.icons_swiper]}>
-        <View style={styles.icon}>
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={() => addToFavouritesHandler()}>
           <MaterialCommunityIcons
-            name="heart-outline"
+            name={isFavourite ? 'heart' : 'heart-outline'}
             size={25}
             color={THEME.ICON_COLOR}
           />
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.icon}>
           <Feather name="message-circle" size={25} color={THEME.ICON_COLOR} />
