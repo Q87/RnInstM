@@ -64,6 +64,7 @@ export const user = [
             user: 'test',
             text:
               'Banjo tote bag bicecle rights, High Life sartorial cray craft beer whatever street art fap.',
+            likedBy: [1],
             reviews: [
               {
                 id: 1,

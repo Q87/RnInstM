@@ -6,6 +6,7 @@ import {
   RESET_DATA_FOR_SHARING,
   ADD_TO_FAVOURITES,
   ADD_COMMENT,
+  TOGGLE_LIKE,
 } from '../types';
 import {user} from '../../mocks/user';
 
@@ -54,6 +55,7 @@ export const addPost = (post) => (dispatch, getState) => {
         id: 1,
         user: allPosts[0].name,
         text: textToShare,
+        likedBy: [],
         reviews: [],
       },
     ],
@@ -151,6 +153,7 @@ export const addComment = (userId, storyId, comment, ownName) => (
     id: comments.length + 1,
     user: ownName,
     text: comment,
+    likedBy: [],
     reviews: [],
   });
 
@@ -160,6 +163,53 @@ export const addComment = (userId, storyId, comment, ownName) => (
 
   dispatch({
     type: ADD_COMMENT,
+    payload: allPostsCopied,
+  });
+};
+
+/**
+ * Toggle post comment like
+ */
+export const toggleLike = (userId, storyId, commentId, isLiked, ownId) => (
+  dispatch,
+  getState,
+) => {
+  let {
+    post: {allPosts},
+  } = getState();
+  const allPostsCopied = [...allPosts];
+
+  // Find user
+  const currentUserIdx = allPostsCopied.findIndex(
+    (currentUser) => userId === currentUser.id,
+  );
+  // Find user story
+  const currentUserStoryIdx = allPostsCopied[currentUserIdx].stories.findIndex(
+    (story) => storyId === story.id,
+  );
+  // Find a comment
+  const commentIdx = allPostsCopied[currentUserIdx].stories[
+    currentUserStoryIdx
+  ].comments.findIndex((comment) => commentId === comment.id);
+  // Likes list
+  let {likedBy} = allPostsCopied[currentUserIdx].stories[
+    currentUserStoryIdx
+  ].comments[commentIdx];
+
+  // If the comment to the post is liked
+  if (isLiked) {
+    likedBy.push(ownId);
+  } else {
+    // If the post comment like has been removed
+    likedBy = likedBy.filter((id) => ownId !== id);
+  }
+
+  allPostsCopied[currentUserIdx].stories[currentUserStoryIdx].comments[
+    commentIdx
+  ].likedBy = likedBy;
+
+  dispatch({
+    type: TOGGLE_LIKE,
     payload: allPostsCopied,
   });
 };

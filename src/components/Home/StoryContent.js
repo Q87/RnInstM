@@ -33,7 +33,12 @@ export const StoryContent = ({
           </View>
         )}
 
-        <StoryTalk name={name} comments={comments} />
+        <StoryTalk
+          userId={userId}
+          storyId={storyId}
+          name={name}
+          comments={comments}
+        />
       </View>
 
       <AddComment userId={userId} storyId={storyId} />

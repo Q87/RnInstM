@@ -5,6 +5,8 @@ import {THEME} from '../../theme';
 import {useDispatch} from 'react-redux';
 import {addComment} from '../../store/actions/post';
 
+import {own} from '../../mocks/own';
+
 /**
  * Add a comment
  */
@@ -16,7 +18,7 @@ export const AddComment = ({userId, storyId}) => {
    * Save comment
    */
   const onSubmitEditingHandler = ({nativeEvent: {text: comment}}) => {
-    dispatch(addComment(userId, storyId, comment, 'test'));
+    dispatch(addComment(userId, storyId, comment, own.ownName));
     setText('');
   };
 

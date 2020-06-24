@@ -4,6 +4,7 @@ import {
   ADD_POST,
   ADD_TO_FAVOURITES,
   ADD_COMMENT,
+  TOGGLE_LIKE,
 } from '../types';
 
 const initialState = {
@@ -43,6 +44,12 @@ export const postReducer = (state = initialState, action) => {
       };
 
     case ADD_COMMENT:
+      return {
+        ...state,
+        allPosts: action.payload,
+      };
+
+    case TOGGLE_LIKE:
       return {
         ...state,
         allPosts: action.payload,

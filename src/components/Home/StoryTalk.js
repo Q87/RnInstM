@@ -1,53 +1,76 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {THEME} from '../../theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import {useDispatch} from 'react-redux';
+import {toggleLike} from '../../store/actions/post';
+
+import {own} from '../../mocks/own';
 
 /**
  * Show a discussion of a story
  */
-export const StoryTalk = ({name, comments}) => {
-  return comments.map(({id, user, text: comment, reviews}) => (
-    <View key={id}>
-      {comment.trim().length > 0 && (
-        <View>
-          <View style={styles.comments}>
-            <Text>
-              <Text style={styles.comment__user}>{user}</Text>
-              <Text>{'  '}</Text>
-              <Text>{comment}</Text>
-            </Text>
-          </View>
+export const StoryTalk = ({userId, storyId, name, comments}) => {
+  const dispatch = useDispatch();
 
-          <MaterialCommunityIcons
-            name="heart-outline"
-            size={15}
-            color={THEME.INACTIVE_COLOR}
-            style={styles.like}
-          />
-        </View>
-      )}
+  /**
+   * Toggle like
+   */
+  const onPressHandler = (commentId, isLiked) => {
+    dispatch(toggleLike(userId, storyId, commentId, isLiked, own.ownId));
+  };
 
-      {reviews.length > 0 && (
-        <View>
-          {reviews.map(({id: key, text: review}) => (
-            <View style={styles.reviewWrapper} key={key}>
-              <View style={styles.review}>
-                <Text style={styles.review__text}>{review}</Text>
+  return comments.map(
+    ({id: commentId, user, text: comment, likedBy, reviews}) => {
+      const isLiked = likedBy.includes(own.ownId);
+
+      return (
+        <View key={commentId}>
+          {comment.trim().length > 0 && (
+            <View>
+              <View style={styles.comments}>
+                <Text>
+                  <Text style={styles.comment__user}>{user}</Text>
+                  <Text>{'  '}</Text>
+                  <Text>{comment}</Text>
+                </Text>
               </View>
 
-              <MaterialCommunityIcons
-                name="heart-outline"
-                size={15}
-                color={THEME.INACTIVE_COLOR}
+              <TouchableOpacity
                 style={styles.like}
-              />
+                onPress={() => onPressHandler(commentId, !isLiked)}>
+                <MaterialCommunityIcons
+                  name={isLiked ? 'heart' : 'heart-outline'}
+                  size={15}
+                  color={THEME.INACTIVE_COLOR}
+                />
+              </TouchableOpacity>
             </View>
-          ))}
+          )}
+
+          {reviews.length > 0 && (
+            <View>
+              {reviews.map(({id: key, text: review}) => (
+                <View style={styles.reviewWrapper} key={key}>
+                  <View style={styles.review}>
+                    <Text style={styles.review__text}>{review}</Text>
+                  </View>
+
+                  <MaterialCommunityIcons
+                    name="heart-outline"
+                    size={15}
+                    color={THEME.INACTIVE_COLOR}
+                    style={styles.like}
+                  />
+                </View>
+              ))}
+            </View>
+          )}
         </View>
-      )}
-    </View>
-  ));
+      );
+    },
+  );
 };
 
 const styles = StyleSheet.create({
