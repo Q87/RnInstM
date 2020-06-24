@@ -1,15 +1,35 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet, TextInput} from 'react-native';
 import {THEME} from '../../theme';
+
+import {useDispatch} from 'react-redux';
+import {addComment} from '../../store/actions/post';
 
 /**
  * Add a comment
  */
-export const AddComment = () => {
+export const AddComment = ({userId, storyId}) => {
+  const [text, setText] = useState('');
+  const dispatch = useDispatch();
+
+  /**
+   * Save comment
+   */
+  const onSubmitEditingHandler = ({nativeEvent: {text: comment}}) => {
+    dispatch(addComment(userId, storyId, comment, 'test'));
+    setText('');
+  };
+
   return (
     <View style={styles.add}>
       <View style={styles.add__user} />
-      <TextInput style={styles.add__input} placeholder="Add a comment..." />
+      <TextInput
+        value={text}
+        onChangeText={setText}
+        style={styles.add__input}
+        placeholder="Add a comment..."
+        onSubmitEditing={onSubmitEditingHandler}
+      />
     </View>
   );
 };

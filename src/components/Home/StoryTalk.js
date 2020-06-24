@@ -6,13 +6,17 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 /**
  * Show a discussion of a story
  */
-export const StoryTalk = ({name, content}) => {
-  return content.map(({id, data, reviews}) => (
+export const StoryTalk = ({name, comments}) => {
+  return comments.map(({id, user, text: comment, reviews}) => (
     <View key={id}>
-      {data.trim().length > 0 && (
+      {comment.trim().length > 0 && (
         <View>
-          <View style={styles.content}>
-            <Text>{data}</Text>
+          <View style={styles.comments}>
+            <Text>
+              <Text style={styles.comment__user}>{user}</Text>
+              <Text>{'  '}</Text>
+              <Text>{comment}</Text>
+            </Text>
           </View>
 
           <MaterialCommunityIcons
@@ -26,7 +30,7 @@ export const StoryTalk = ({name, content}) => {
 
       {reviews.length > 0 && (
         <View>
-          {reviews.map(({id: key, data: review}) => (
+          {reviews.map(({id: key, text: review}) => (
             <View style={styles.reviewWrapper} key={key}>
               <View style={styles.review}>
                 <Text style={styles.review__text}>{review}</Text>
@@ -47,9 +51,12 @@ export const StoryTalk = ({name, content}) => {
 };
 
 const styles = StyleSheet.create({
-  content: {
+  comments: {
     marginTop: 10,
     width: '86%',
+  },
+  comment__user: {
+    fontWeight: '700',
   },
   like: {
     position: 'absolute',

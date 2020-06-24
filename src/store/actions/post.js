@@ -5,6 +5,7 @@ import {
   ADD_POST,
   RESET_DATA_FOR_SHARING,
   ADD_TO_FAVOURITES,
+  ADD_COMMENT,
 } from '../types';
 import {user} from '../../mocks/user';
 
@@ -48,10 +49,11 @@ export const addPost = (post) => (dispatch, getState) => {
     })),
     likedBy: {},
     hashtags: [],
-    content: [
+    comments: [
       {
         id: 1,
-        data: textToShare,
+        user: allPosts[0].name,
+        text: textToShare,
         reviews: [],
       },
     ],
@@ -117,5 +119,47 @@ export const addToFavourites = (userId, storyId, actionType) => (
     type: ADD_TO_FAVOURITES,
     favourites: favouritesCopied,
     favouritePosts: favouritePostsCopied,
+  });
+};
+
+/**
+ * Add a comment
+ */
+export const addComment = (userId, storyId, comment, ownName) => (
+  dispatch,
+  getState,
+) => {
+  let {
+    post: {allPosts},
+  } = getState();
+  const allPostsCopied = [...allPosts];
+
+  // Find user
+  const currentUserIdx = allPostsCopied.findIndex(
+    (currentUser) => userId === currentUser.id,
+  );
+  // Find user story
+  const currentUserStoryIdx = allPostsCopied[currentUserIdx].stories.findIndex(
+    (story) => storyId === story.id,
+  );
+  // Comments
+  const {comments} = {
+    ...allPostsCopied[currentUserIdx].stories[currentUserStoryIdx],
+  };
+
+  comments.push({
+    id: comments.length + 1,
+    user: ownName,
+    text: comment,
+    reviews: [],
+  });
+
+  allPostsCopied[currentUserIdx].stories[
+    currentUserStoryIdx
+  ].comments = comments;
+
+  dispatch({
+    type: ADD_COMMENT,
+    payload: allPostsCopied,
   });
 };

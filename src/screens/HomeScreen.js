@@ -44,7 +44,13 @@ export const HomeScreen = () => {
   const {id: userId, name, location, stories} = allPosts[0];
 
   // Show stories
-  const renderStories = ({id: storyId, images, likedBy, hashtags, content}) => (
+  const renderStories = ({
+    id: storyId,
+    images,
+    likedBy,
+    hashtags,
+    comments,
+  }) => (
     <View>
       <ProfileTopBar name={name} location={location} />
 
@@ -59,10 +65,12 @@ export const HomeScreen = () => {
       />
 
       <StoryContent
+        userId={userId}
+        storyId={storyId}
         name={name}
         likedBy={likedBy}
         hashtags={hashtags}
-        content={content}
+        comments={comments}
       />
     </View>
   );

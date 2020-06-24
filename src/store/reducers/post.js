@@ -1,4 +1,10 @@
-import {LOAD_POSTS, ADD_IMAGE, ADD_POST, ADD_TO_FAVOURITES} from '../types';
+import {
+  LOAD_POSTS,
+  ADD_IMAGE,
+  ADD_POST,
+  ADD_TO_FAVOURITES,
+  ADD_COMMENT,
+} from '../types';
 
 const initialState = {
   allPosts: [],
@@ -34,6 +40,12 @@ export const postReducer = (state = initialState, action) => {
         ...state,
         favourites: action.favourites,
         favouritePosts: action.favouritePosts,
+      };
+
+    case ADD_COMMENT:
+      return {
+        ...state,
+        allPosts: action.payload,
       };
 
     default:

@@ -8,7 +8,14 @@ import {AddComment} from './AddComment';
 /**
  * Show story content
  */
-export const StoryContent = ({name, likedBy, hashtags, content}) => {
+export const StoryContent = ({
+  userId,
+  storyId,
+  name,
+  likedBy,
+  hashtags,
+  comments,
+}) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.story}>
@@ -26,10 +33,10 @@ export const StoryContent = ({name, likedBy, hashtags, content}) => {
           </View>
         )}
 
-        <StoryTalk name={name} content={content} />
+        <StoryTalk name={name} comments={comments} />
       </View>
 
-      <AddComment />
+      <AddComment userId={userId} storyId={storyId} />
     </View>
   );
 };

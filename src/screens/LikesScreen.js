@@ -17,7 +17,7 @@ export const LikesScreen = () => {
   const renderStories = ({
     data: {id: userId, name, location, stories, favourites},
   }) =>
-    stories.map(({id: storyId, images, likedBy, hashtags, content}) => (
+    stories.map(({id: storyId, images, likedBy, hashtags, comments}) => (
       <View key={storyId}>
         <ProfileTopBar name={name} location={location} />
 
@@ -32,7 +32,7 @@ export const LikesScreen = () => {
           name={name}
           likedBy={likedBy}
           hashtags={hashtags}
-          content={content}
+          comments={comments}
         />
       </View>
     ));

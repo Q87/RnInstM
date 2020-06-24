@@ -58,15 +58,16 @@ export const user = [
             name: 'Look nice!',
           },
         ],
-        content: [
+        comments: [
           {
             id: 1,
-            data:
+            user: 'test',
+            text:
               'Banjo tote bag bicecle rights, High Life sartorial cray craft beer whatever street art fap.',
             reviews: [
               {
                 id: 1,
-                data:
+                text:
                   'Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave, PBR&B selfies chillwave',
               },
             ],
