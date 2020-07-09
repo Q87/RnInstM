@@ -8,7 +8,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {HomeNavigator} from './HomeNavigator';
-import {SearchNavigator} from './SearchNavigator';
+import {SearchScreen} from '../screens/SearchScreen';
 import {AddStoryNavigator} from './AddStoryNavigator';
 import {LikesNavigator} from './LikesNavigator';
 import {ProfileNavigator} from './ProfileNavigator';
@@ -32,18 +32,18 @@ const BottomNavigator = () => (
       component={HomeNavigator}
       options={{
         tabBarLabel: '',
-        tabBarIcon: info => (
+        tabBarIcon: (info) => (
           <Feather name="home" size={25} color={info.color} />
         ),
       }}
     />
 
     <BottomNavigatorStack.Screen
-      name="SearchNavigator"
-      component={SearchNavigator}
+      name="SearchScreen"
+      component={SearchScreen}
       options={{
         tabBarLabel: '',
-        tabBarIcon: info => (
+        tabBarIcon: (info) => (
           <Feather name="search" size={25} color={info.color} />
         ),
       }}
@@ -54,7 +54,7 @@ const BottomNavigator = () => (
       component={AddStoryNavigator}
       options={{
         tabBarLabel: '',
-        tabBarIcon: info => (
+        tabBarIcon: (info) => (
           <Feather name="plus-square" size={25} color={info.color} />
         ),
         tabBarVisible: false,
@@ -66,7 +66,7 @@ const BottomNavigator = () => (
       component={LikesNavigator}
       options={{
         tabBarLabel: '',
-        tabBarIcon: info => (
+        tabBarIcon: (info) => (
           <MaterialCommunityIcons name="heart" size={25} color={info.color} />
         ),
       }}
@@ -77,7 +77,7 @@ const BottomNavigator = () => (
       component={ProfileNavigator}
       options={{
         tabBarLabel: '',
-        tabBarIcon: info => (
+        tabBarIcon: (info) => (
           <Feather name="circle" size={25} color={info.color} />
         ),
       }}

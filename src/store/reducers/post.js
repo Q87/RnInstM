@@ -5,6 +5,7 @@ import {
   ADD_TO_FAVOURITES,
   ADD_COMMENT,
   TOGGLE_LIKE,
+  START_SEARCHING,
 } from '../types';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   newImage: '',
   favourites: [],
   favouritePosts: [],
+  searchResults: [],
 };
 
 export const postReducer = (state = initialState, action) => {
@@ -53,6 +55,12 @@ export const postReducer = (state = initialState, action) => {
       return {
         ...state,
         allPosts: action.payload,
+      };
+
+    case START_SEARCHING:
+      return {
+        ...state,
+        searchResults: action.payload,
       };
 
     default:

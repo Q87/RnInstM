@@ -15,6 +15,12 @@ export const ProfileImage = ({
   gradientSize = 62,
   imageSize = 57,
   imageBorder = true,
+  Icon,
+  iconName,
+  iconSize,
+  iconColor,
+  backgroundColor,
+  imageBorderColor,
 }) => {
   return (
     <View>
@@ -30,8 +36,12 @@ export const ProfileImage = ({
               styles.imageWrapper,
               {width: imageSize, height: imageSize},
               imageBorder && styles.imageWrapper_border,
+              backgroundColor && {backgroundColor},
+              imageBorderColor && {borderColor: imageBorderColor},
             ]}>
-            <Image style={styles.image} source={{uri: url}} />
+            {url && <Image style={styles.image} source={{uri: url}} />}
+
+            {Icon && <Icon name={iconName} size={iconSize} color={iconColor} />}
           </View>
         </LinearGradient>
       </View>

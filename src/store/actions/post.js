@@ -7,8 +7,11 @@ import {
   ADD_TO_FAVOURITES,
   ADD_COMMENT,
   TOGGLE_LIKE,
+  START_SEARCHING,
 } from '../types';
 import {user} from '../../mocks/user';
+import {search} from '../../mocks/search';
+import {SEARCH_RESULTS_QTY} from '../../constants';
 
 /**
  * Load posts
@@ -211,5 +214,82 @@ export const toggleLike = (userId, storyId, commentId, isLiked, ownId) => (
   dispatch({
     type: TOGGLE_LIKE,
     payload: allPostsCopied,
+  });
+};
+
+/**
+ * Get search results
+ */
+const getSearchResults = (type, searchParameter, result) => {
+  let testParameter = null;
+
+  switch (type) {
+    case 'Top':
+      const keys = Object.keys(result);
+
+      if (keys.includes('username')) {
+        // People
+        testParameter = result.username;
+      } else if (keys.includes('hashtag')) {
+        // Tags
+        testParameter = result.hashtag;
+      } else if (keys.includes('place')) {
+        // Places
+        testParameter = result.place;
+      }
+      break;
+
+    case 'People':
+      testParameter = result.username;
+      break;
+
+    case 'Tags':
+      testParameter = result.hashtag;
+      break;
+
+    case 'Places':
+      testParameter = result.place;
+      break;
+  }
+
+  return new RegExp(searchParameter.replace(' ', '\\s*'), 'i').test(
+    testParameter,
+  );
+};
+
+/**
+ * Start searching
+ */
+export const startSearching = (type, searchParameter, from = 0) => (
+  dispatch,
+  getState,
+) => {
+  let {
+    post: {searchResults: prevSearchResults},
+  } = getState();
+
+  return new Promise((resolve, reject) => {
+    try {
+      // TODO: Add search results cache
+      const searchResults = search[type].filter((result) =>
+        getSearchResults(type, searchParameter, result),
+      );
+
+      const curPos = from * SEARCH_RESULTS_QTY + SEARCH_RESULTS_QTY;
+
+      dispatch({
+        type: START_SEARCHING,
+        payload: from
+          ? [
+              ...prevSearchResults,
+              ...searchResults.slice(from * SEARCH_RESULTS_QTY, curPos),
+            ]
+          : searchResults.slice(0, SEARCH_RESULTS_QTY),
+      });
+
+      resolve(curPos >= searchResults.length ? true : false);
+    } catch (err) {
+      reject(err);
+    }
   });
 };
