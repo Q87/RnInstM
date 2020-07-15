@@ -6,6 +6,7 @@ export const THEME = {
   SEPARATOR_COLOR: '#ebeceb',
   INACTIVE_COLOR: '#b3b3b3',
   USER_INFO_COLOR: '#989898',
+  INACTIVE_TAB_COLOR: '#737373',
 
   ICON_COLOR: '#000000',
   DIMMING_BACKGROUND: 'rgba(0, 0, 0, .5)',

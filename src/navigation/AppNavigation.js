@@ -8,7 +8,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {HomeNavigator} from './HomeNavigator';
-import {SearchScreen} from '../screens/SearchScreen';
+import {SearchNavigator} from './SearchNavigator';
 import {AddStoryNavigator} from './AddStoryNavigator';
 import {LikesNavigator} from './LikesNavigator';
 import {ProfileNavigator} from './ProfileNavigator';
@@ -39,8 +39,8 @@ const BottomNavigator = () => (
     />
 
     <BottomNavigatorStack.Screen
-      name="SearchScreen"
-      component={SearchScreen}
+      name="SearchNavigator"
+      component={SearchNavigator}
       options={{
         tabBarLabel: '',
         tabBarIcon: (info) => (

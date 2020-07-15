@@ -21,6 +21,7 @@ export const ProfileImage = ({
   iconColor,
   backgroundColor,
   imageBorderColor,
+  imageBorderWidth = 1,
 }) => {
   return (
     <View>
@@ -35,6 +36,7 @@ export const ProfileImage = ({
             style={[
               styles.imageWrapper,
               {width: imageSize, height: imageSize},
+              imageBorderWidth && {borderWidth: imageBorderWidth},
               imageBorder && styles.imageWrapper_border,
               backgroundColor && {backgroundColor},
               imageBorderColor && {borderColor: imageBorderColor},
@@ -78,7 +80,6 @@ const styles = StyleSheet.create({
     transform: [{rotate: '-225deg'}],
   },
   imageWrapper_border: {
-    borderWidth: 1,
     borderColor: THEME.MAIN_CONTENT_COLOR,
   },
   image: {

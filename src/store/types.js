@@ -16,3 +16,6 @@ export const SET_PHOTO_TO_SAVE = 'SET_PHOTO_TO_SAVE';
 export const SET_PHOTO_TO_SHARE = 'SET_PHOTO_TO_SHARE';
 export const SET_TEXT_TO_SHARE = 'SET_TEXT_TO_SHARE';
 export const RESET_DATA_FOR_SHARING = 'RESET_DATA_FOR_SHARING';
+
+/* user */
+export const GET_USER_POST = 'GET_USER_POST';

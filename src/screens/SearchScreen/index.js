@@ -7,14 +7,15 @@ import {
   Text,
   ActivityIndicator,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
-import {THEME} from '../theme';
+import {THEME} from '../../theme';
 import Feather from 'react-native-vector-icons/Feather';
-import {useSearchResults} from '../hooks/useSearchResults';
-import {SEARCH_RESULTS_QTY} from '../constants';
+import {useSearchResults} from './hooks/useSearchResults';
+import {SEARCH_RESULTS_QTY} from '../../constants';
 
 import {SearchBar, ButtonGroup} from 'react-native-elements';
-import {ProfileImage} from '../components/ProfileImage';
+import {ProfileImage} from '../../components/ProfileImage';
 
 // Tab list
 const BUTTONS = ['Top', 'People', 'Tags', 'Places'];
@@ -22,7 +23,7 @@ const BUTTONS = ['Top', 'People', 'Tags', 'Places'];
 /**
  * Show search screen
  */
-export const SearchScreen = () => {
+export const SearchScreen = ({navigation}) => {
   const {
     search,
     selectedIndex,
@@ -63,90 +64,105 @@ export const SearchScreen = () => {
   };
 
   /**
+   * Go to the user profile screen
+   */
+  const showProfile = (username) => {
+    navigation.navigate('ProfileToFollowScreen', {
+      username,
+    });
+  };
+
+  /**
    * Show results for the 'People' filter
    */
   const peopleJSX = ({url, username, name, followed, following}) => (
-    <View style={styles.result}>
-      <View>
-        <ProfileImage
-          url={url}
-          start="transparent"
-          end="transparent"
-          iconSize={32}
-          iconColor={THEME.ICON_COLOR}
-          backgroundColor={THEME.MAIN_CONTENT_COLOR}
-          imageBorderColor={THEME.DIMMING_ICON_BACKGROUND}
-          imageSize={50}
-        />
-      </View>
+    <TouchableOpacity activeOpacity={0.6} onPress={() => showProfile(username)}>
+      <View style={styles.result}>
+        <View>
+          <ProfileImage
+            url={url}
+            start="transparent"
+            end="transparent"
+            iconSize={32}
+            iconColor={THEME.ICON_COLOR}
+            backgroundColor={THEME.MAIN_CONTENT_COLOR}
+            imageBorderColor={THEME.DIMMING_ICON_BACKGROUND}
+            imageSize={50}
+          />
+        </View>
 
-      <View style={styles.user}>
-        <Text style={styles.user__login}>{username}</Text>
-        <Text>
-          <Text style={styles.user__name}>{name}</Text>
-          {followingInfoJSX({
-            following,
-            followed,
-          })}
-        </Text>
+        <View style={styles.user}>
+          <Text style={styles.user__login}>{username}</Text>
+          <Text>
+            <Text style={styles.user__name}>{name}</Text>
+            {followingInfoJSX({
+              following,
+              followed,
+            })}
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   /**
    * Show results for the 'Tags' filter
    */
   const tagsJSX = ({hashtag, qty}) => (
-    <View style={styles.result}>
-      <View>
-        <ProfileImage
-          start="transparent"
-          end="transparent"
-          Icon={Feather}
-          iconName="hash"
-          iconSize={32}
-          iconColor={THEME.ICON_COLOR}
-          backgroundColor={THEME.MAIN_CONTENT_COLOR}
-          imageBorderColor={THEME.DIMMING_ICON_BACKGROUND}
-          imageSize={50}
-        />
-      </View>
+    <TouchableOpacity activeOpacity={0.6}>
+      <View style={styles.result}>
+        <View>
+          <ProfileImage
+            start="transparent"
+            end="transparent"
+            Icon={Feather}
+            iconName="hash"
+            iconSize={32}
+            iconColor={THEME.ICON_COLOR}
+            backgroundColor={THEME.MAIN_CONTENT_COLOR}
+            imageBorderColor={THEME.DIMMING_ICON_BACKGROUND}
+            imageSize={50}
+          />
+        </View>
 
-      <View style={styles.user}>
-        <Text style={styles.user__login}>{hashtag}</Text>
-        <Text>
-          <Text style={styles.user__name}>{qty.toLocaleString()} posts</Text>
-        </Text>
+        <View style={styles.user}>
+          <Text style={styles.user__login}>{hashtag}</Text>
+          <Text>
+            <Text style={styles.user__name}>{qty.toLocaleString()} posts</Text>
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   /**
    * Show results for the 'Places' filter
    */
   const placesJSX = ({place, qty}) => (
-    <View style={styles.result}>
-      <View>
-        <ProfileImage
-          start="transparent"
-          end="transparent"
-          Icon={Feather}
-          iconName="map-pin"
-          iconSize={32}
-          iconColor={THEME.ICON_COLOR}
-          backgroundColor={THEME.MAIN_CONTENT_COLOR}
-          imageBorderColor={THEME.DIMMING_ICON_BACKGROUND}
-          imageSize={50}
-        />
-      </View>
+    <TouchableOpacity activeOpacity={0.6}>
+      <View style={styles.result}>
+        <View>
+          <ProfileImage
+            start="transparent"
+            end="transparent"
+            Icon={Feather}
+            iconName="map-pin"
+            iconSize={32}
+            iconColor={THEME.ICON_COLOR}
+            backgroundColor={THEME.MAIN_CONTENT_COLOR}
+            imageBorderColor={THEME.DIMMING_ICON_BACKGROUND}
+            imageSize={50}
+          />
+        </View>
 
-      <View style={styles.user}>
-        <Text style={styles.user__login}>{place}</Text>
-        <Text>
-          <Text style={styles.user__name}>{qty.toLocaleString()} posts</Text>
-        </Text>
+        <View style={styles.user}>
+          <Text style={styles.user__login}>{place}</Text>
+          <Text>
+            <Text style={styles.user__name}>{qty.toLocaleString()} posts</Text>
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   /**

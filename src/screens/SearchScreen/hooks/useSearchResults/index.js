@@ -2,7 +2,7 @@ import {useState} from 'react';
 import useTimeout from '@rooks/use-timeout';
 
 import {useSelector, useDispatch} from 'react-redux';
-import {startSearching} from '../store/actions/post';
+import {startSearching} from '../../../../store/actions/post';
 
 export const useSearchResults = (buttons) => {
   const [search, setSearch] = useState('');

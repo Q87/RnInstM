@@ -77,5 +77,103 @@ export const user = [
       },
     ],
     favourites: [],
+    markedBy: [
+      {
+        id: 2,
+        name: 'fo5oddatbd',
+        stories: [
+          {
+            id: 1,
+            images: [
+              {
+                id: 1,
+                url: 'https://picsum.photos/300',
+              },
+            ],
+            likedBy: {
+              qty: 532,
+              last: [
+                {
+                  id: 2,
+                  name: 'User_2',
+                  avatar: 'https://picsum.photos/300',
+                },
+              ],
+            },
+            hashtags: [
+              {
+                id: 1,
+                name: '#travel',
+              },
+            ],
+            comments: [
+              {
+                id: 1,
+                user: 'test',
+                text:
+                  'Banjo tote bag bicecle rights, High Life sartorial cray craft beer whatever street art fap.',
+                likedBy: [2],
+                reviews: [
+                  {
+                    id: 1,
+                    text:
+                      'Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave, PBR&B selfies chillwave',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        favourites: [],
+      },
+      {
+        id: 3,
+        name: 'c7e2zrwtur',
+        stories: [
+          {
+            id: 1,
+            images: [
+              {
+                id: 1,
+                url: 'https://placebeard.it/300x300',
+              },
+            ],
+            likedBy: {
+              qty: 321,
+              last: [
+                {
+                  id: 3,
+                  name: 'KnE',
+                  avatar: 'https://placebeard.it/300x300',
+                },
+              ],
+            },
+            hashtags: [
+              {
+                id: 1,
+                name: 'Look nice!',
+              },
+            ],
+            comments: [
+              {
+                id: 1,
+                user: 'test',
+                text:
+                  'Banjo tote bag bicecle rights, High Life sartorial cray craft beer whatever street art fap.',
+                likedBy: [3],
+                reviews: [
+                  {
+                    id: 1,
+                    text:
+                      'Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave, PBR&B selfies chillwave',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        favourites: [],
+      },
+    ],
   },
 ];
