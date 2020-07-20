@@ -1,3 +1,4 @@
+// Core
 import React from 'react';
 import {
   SafeAreaView,
@@ -10,13 +11,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {THEME} from '../../theme';
+
+// Components
 import Feather from 'react-native-vector-icons/Feather';
-import {useSearchResults} from './hooks/useSearchResults';
-import {SEARCH_RESULTS_QTY} from '../../constants';
-
 import {SearchBar, ButtonGroup} from 'react-native-elements';
-import {ProfileImage} from '../../components/ProfileImage';
+import {ProfileImageHOC} from './profileImageHOC';
 
+// Hooks
+import {useSearchResults} from './hooks/useSearchResults';
+
+// Constants
+import {SEARCH_RESULTS_QTY} from '../../constants';
 // Tab list
 const BUTTONS = ['Top', 'People', 'Tags', 'Places'];
 
@@ -79,16 +84,7 @@ export const SearchScreen = ({navigation}) => {
     <TouchableOpacity activeOpacity={0.6} onPress={() => showProfile(username)}>
       <View style={styles.result}>
         <View>
-          <ProfileImage
-            url={url}
-            start="transparent"
-            end="transparent"
-            iconSize={32}
-            iconColor={THEME.ICON_COLOR}
-            backgroundColor={THEME.MAIN_CONTENT_COLOR}
-            imageBorderColor={THEME.DIMMING_ICON_BACKGROUND}
-            imageSize={50}
-          />
+          <ProfileImageHOC url={url} />
         </View>
 
         <View style={styles.user}>
@@ -112,17 +108,7 @@ export const SearchScreen = ({navigation}) => {
     <TouchableOpacity activeOpacity={0.6}>
       <View style={styles.result}>
         <View>
-          <ProfileImage
-            start="transparent"
-            end="transparent"
-            Icon={Feather}
-            iconName="hash"
-            iconSize={32}
-            iconColor={THEME.ICON_COLOR}
-            backgroundColor={THEME.MAIN_CONTENT_COLOR}
-            imageBorderColor={THEME.DIMMING_ICON_BACKGROUND}
-            imageSize={50}
-          />
+          <ProfileImageHOC Icon={Feather} iconName="hash" />
         </View>
 
         <View style={styles.user}>
@@ -142,17 +128,7 @@ export const SearchScreen = ({navigation}) => {
     <TouchableOpacity activeOpacity={0.6}>
       <View style={styles.result}>
         <View>
-          <ProfileImage
-            start="transparent"
-            end="transparent"
-            Icon={Feather}
-            iconName="map-pin"
-            iconSize={32}
-            iconColor={THEME.ICON_COLOR}
-            backgroundColor={THEME.MAIN_CONTENT_COLOR}
-            imageBorderColor={THEME.DIMMING_ICON_BACKGROUND}
-            imageSize={50}
-          />
+          <ProfileImageHOC Icon={Feather} iconName="map-pin" />
         </View>
 
         <View style={styles.user}>

@@ -1,7 +1,12 @@
+// Core
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {THEME} from '../../theme';
+
+// Components
 import {ProfileImage} from '../ProfileImage';
+
+const PROFILE_IMAGE_SIZE = 13;
 
 /**
  * Show information about the likes of a story
@@ -15,9 +20,8 @@ export const LikedBy = ({likedBy}) => {
             style={[styles.likes__user, key === 0 && styles.likes__user_first]}
             key={id}>
             <ProfileImage
-              gradientSize={13}
-              imageSize={13}
-              imageBorder={false}
+              gradientSize={PROFILE_IMAGE_SIZE}
+              imageSize={PROFILE_IMAGE_SIZE}
               url={avatar}
             />
           </View>

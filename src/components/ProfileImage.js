@@ -1,6 +1,9 @@
+// Core
 import React from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {THEME} from '../theme';
+
+// Components
 import LinearGradient from 'react-native-linear-gradient';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -8,24 +11,25 @@ import Feather from 'react-native-vector-icons/Feather';
  * Show profile image
  */
 export const ProfileImage = ({
-  url,
   start = THEME.PROFILE_IMAGE_GRADIENT_START,
   end = THEME.PROFILE_IMAGE_GRADIENT_END,
-  own = false,
-  gradientSize = 62,
-  imageSize = 57,
-  imageBorder = true,
+  imageBorderWidth = 1,
+  url,
+  own,
+  ownPos,
+  gradientSize,
+  imageSize,
+  imageBorder,
   Icon,
   iconName,
   iconSize,
   iconColor,
   backgroundColor,
   imageBorderColor,
-  imageBorderWidth = 1,
 }) => {
   return (
     <View>
-      <View style={styles.gradientWrapper}>
+      <View style={[styles.gradientWrapper, {borderRadius: gradientSize / 2}]}>
         <LinearGradient
           colors={[start, end]}
           style={[
@@ -35,8 +39,12 @@ export const ProfileImage = ({
           <View
             style={[
               styles.imageWrapper,
-              {width: imageSize, height: imageSize},
-              imageBorderWidth && {borderWidth: imageBorderWidth},
+              {
+                width: imageSize,
+                height: imageSize,
+                borderRadius: imageSize / 2,
+                borderWidth: imageBorderWidth,
+              },
               imageBorder && styles.imageWrapper_border,
               backgroundColor && {backgroundColor},
               imageBorderColor && {borderColor: imageBorderColor},
@@ -49,7 +57,14 @@ export const ProfileImage = ({
       </View>
 
       {own && (
-        <View style={styles.addWrapper}>
+        <View
+          style={[
+            styles.addWrapper,
+            {
+              top: ownPos,
+              left: ownPos,
+            },
+          ]}>
           <Feather
             name="plus"
             size={17}
@@ -64,7 +79,6 @@ export const ProfileImage = ({
 
 const styles = StyleSheet.create({
   gradientWrapper: {
-    borderRadius: 100,
     overflow: 'hidden',
   },
   gradient: {
@@ -73,7 +87,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageWrapper: {
-    borderRadius: 100,
     backgroundColor: THEME.ICON_COLOR,
     justifyContent: 'center',
     alignItems: 'center',
@@ -92,8 +105,6 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 100,
     position: 'absolute',
-    left: '63%',
-    top: '63%',
     borderWidth: 1,
     borderColor: THEME.MAIN_CONTENT_COLOR,
     justifyContent: 'center',

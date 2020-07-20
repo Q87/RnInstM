@@ -10,7 +10,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 export const ProfileTopBar = ({name, location}) => {
   return (
     <View style={styles.wrapper}>
-      <ProfileImage gradientSize={34} imageSize={30} imageBorder={false} />
+      <ProfileImage gradientSize={34} imageSize={30} />
 
       <View style={styles.userInfo}>
         <Text style={styles.userInfo__name}>{name}</Text>

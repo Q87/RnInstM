@@ -1,3 +1,4 @@
+// Core
 import React from 'react';
 import {
   SafeAreaView,
@@ -9,27 +10,30 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import {THEME} from '../../theme';
+
+// Components
+import Feather from 'react-native-vector-icons/Feather';
 import {ButtonGroup} from 'react-native-elements';
-import Entypo from 'react-native-vector-icons/Entypo';
-
-import {useProfileToFollow} from './hooks/useProfileToFollow';
-
 import {ProfileImage} from '../../components/ProfileImage';
 import {StoriesLine} from '../../components/Home/StoriesLine';
 import {StorySlider} from '../../components/Home/StorySlider';
 import {StoryContent} from '../../components/Home/StoryContent';
+
+// Hooks
+import {useProfile} from './hooks/useProfile';
 
 // Tab list
 const BUTTON_LIST = [
   'apps',
   'format-list-bulleted',
   'clipboard-account-outline',
+  'bookmark-outline',
 ];
 
 /**
- * Show another user's profile screen
+ * Show profile screen
  */
-export const ProfileToFollowScreen = ({route, navigation}) => {
+export const ProfileScreen = ({navigation}) => {
   const {
     selectedIndex,
     setSelectedIndex,
@@ -37,7 +41,7 @@ export const ProfileToFollowScreen = ({route, navigation}) => {
     windowWidth,
     buttonsJSX,
     showPost,
-  } = useProfileToFollow(route, navigation, BUTTON_LIST);
+  } = useProfile(navigation, BUTTON_LIST);
 
   /**
    * Show another user's posts as images
@@ -156,15 +160,17 @@ export const ProfileToFollowScreen = ({route, navigation}) => {
     }
   };
 
-  // TODO: Add dynamic data
   return (
     <SafeAreaView style={styles.wrapper}>
       <ScrollView>
         <View style={styles.profileCard}>
           <ProfileImage
-            gradientSize={93}
-            imageSize={85}
-            imageBorderWidth={3}
+            gradientSize={88}
+            imageSize={83}
+            start="transparent"
+            end="transparent"
+            own={true}
+            ownPos={(73 * 88) / 100}
             imageBorder={true}
           />
           <View style={styles.totalWrapper}>
@@ -187,17 +193,20 @@ export const ProfileToFollowScreen = ({route, navigation}) => {
 
             <View style={styles.actions}>
               <View style={[styles.action, styles.action_btn]}>
-                <Text style={styles.action__text}>Follow</Text>
+                <Text style={styles.action__text}>Edit Profile</Text>
               </View>
 
-              <View style={styles.action}>
-                <Entypo
-                  name="triangle-down"
-                  color={THEME.MAIN_CONTENT_COLOR}
+              <TouchableHighlight
+                style={[styles.action, styles.action_icon]}
+                underlayColor={THEME.INACTIVE_COLOR}
+                onPress={() => navigation.navigate('OptionsScreen')}>
+                <Feather
+                  name="settings"
+                  color={THEME.ICON_COLOR}
                   style={styles.action__icon}
-                  size={15}
+                  size={18}
                 />
-              </View>
+              </TouchableHighlight>
             </View>
           </View>
         </View>
@@ -210,15 +219,11 @@ export const ProfileToFollowScreen = ({route, navigation}) => {
           <View>
             <Text style={styles.site}>www.roseandivyjournal.com/</Text>
           </View>
-
-          <View>
-            <Text style={styles.followedBy}>
-              Followed by s_reynolds13, sophieipearson, skinnytase + 30 more
-            </Text>
-          </View>
         </View>
 
-        <StoriesLine />
+        <View style={styles.stories}>
+          <StoriesLine />
+        </View>
 
         <ButtonGroup
           onPress={setSelectedIndex}
@@ -240,6 +245,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: THEME.MAIN_CONTENT_COLOR,
+    paddingTop: 7,
   },
   profileCard: {
     flexDirection: 'row',
@@ -266,26 +272,30 @@ const styles = StyleSheet.create({
   },
   total__text: {
     color: THEME.USER_INFO_COLOR,
+    marginTop: -5,
   },
   actions: {
     flexDirection: 'row',
     paddingTop: 10,
   },
   action: {
-    backgroundColor: THEME.ACTIVE_BACKGROUND,
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 5,
+    borderColor: THEME.INACTIVE_COLOR,
+    borderWidth: 1,
   },
   action_btn: {
     flex: 1,
     marginRight: 5,
   },
+  action_icon: {
+    paddingHorizontal: 3,
+  },
   action__text: {
     fontWeight: '700',
     fontSize: 16,
-    color: THEME.MAIN_CONTENT_COLOR,
   },
   action__icon: {
     paddingHorizontal: 10,
@@ -293,6 +303,7 @@ const styles = StyleSheet.create({
 
   shortInfo: {
     paddingHorizontal: 15,
+    paddingBottom: 20,
   },
   nameWrapper: {
     paddingTop: 8,
@@ -311,6 +322,12 @@ const styles = StyleSheet.create({
     paddingTop: 4,
   },
 
+  stories: {
+    paddingTop: 10,
+    borderTopColor: THEME.SEPARATOR_COLOR,
+    borderTopWidth: 1,
+  },
+
   buttonGroup__innerBorderStyle: {
     width: 0,
   },
@@ -323,7 +340,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   buttonGroup__buttonStyle: {
-    paddingTop: 5,
+    paddingTop: 7,
   },
 
   photos: {

@@ -19,6 +19,7 @@ const BottomNavigatorStack = createBottomTabNavigator();
 const bottomTabsConfig = {
   tabBarOptions: {
     activeTintColor: THEME.ICON_COLOR,
+    showLabel: false,
   },
 };
 
@@ -78,7 +79,7 @@ const BottomNavigator = () => (
       options={{
         tabBarLabel: '',
         tabBarIcon: (info) => (
-          <Feather name="circle" size={25} color={info.color} />
+          <MaterialCommunityIcons name="account" size={25} color={info.color} />
         ),
       }}
     />

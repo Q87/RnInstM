@@ -1,14 +1,15 @@
+// Core
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text} from 'react-native';
-import {THEME} from '../theme';
+import {THEME} from '../../../theme';
 
 /**
- * Show profile screen
+ * Show contacts screen
  */
-export const ProfileScreen = () => {
+export const ContactsScreen = () => {
   return (
     <SafeAreaView style={styles.wrapper}>
-      <Text>Profile</Text>
+      <Text>Contacts</Text>
     </SafeAreaView>
   );
 };
